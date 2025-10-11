@@ -314,7 +314,7 @@ const isFullscreen = ref(false);
 const bannerEnabled = computed(() => {
   const banner = getTeekConfig('banner');
   const tkHomeEnabled = getTeekConfig('teekHome');
-  return currentStyle.value !== 'blog-body' && banner && banner?.enabled && tkHomeEnabled;
+  return banner && banner?.enabled && tkHomeEnabled;
 });
 
 const wallpaperEnabled = computed(() => {

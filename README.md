@@ -60,7 +60,7 @@ public下现有文件夹或者文件用途如下，也可自行修改：
 
 配置项可以配置vitepress和teek主题的任何frontmatter属性
 
-其中vitepress的但仅在文档风格下生效，teek主题的frontmatter属性则会覆盖默认配置，具体可以Teek参考[文档](https://vp.teek.top/reference/frontmatter.html#%E9%A6%96%E9%A1%B5%E9%85%8D%E7%BD%AE)
+其中teek主题的frontmatter属性则会覆盖默认配置，具体可以Teek参考[文档](https://vp.teek.top/reference/frontmatter.html#%E9%A6%96%E9%A1%B5%E9%85%8D%E7%BD%AE)
 
 ### 功能页
 根据teek主题默认提供4个功能页，可以直接作为路由配置访问，具体如下：
@@ -82,7 +82,10 @@ public下现有文件夹或者文件用途如下，也可自行修改：
 ![博客风系统截图](./public/screenshot/blog.png)
 
 ### 博客大图
+![博客大图系统截图](./public/screenshot/blog-full.png)
 
 ### 博客全图
+![博客全图系统截图](./public/screenshot/blog-body.png)
 
 ### 博客卡片
+![博客卡片系统截图](./public/screenshot/blog-card.png)
