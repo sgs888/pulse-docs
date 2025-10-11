@@ -1,0 +1,9 @@
+.tk-home-card-list:has(.scroll__animate) {
+  gap: 0 !important;
+  &>div:has(.tk-page-card) {
+    margin-bottom: var(--tk-home-info-gap);
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

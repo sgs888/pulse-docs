@@ -1,0 +1,101 @@
+html {
+  position: relative;
+  -ms-overflow-style: none;  /* IE 和 Edge */
+  scrollbar-width: none;     /* Firefox：隐藏 */
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fake-scrollbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100vh;
+    // background: #f1f1f1;
+    background-color: transparent;
+    border-radius: 4px;
+    z-index: 99;
+    opacity: 0;
+    transition: all 0.2s ease;
+    &.hover {
+      opacity: 1 !important;
+    }
+  }
+
+  .fake-thumb {
+    width: 100%;
+    background-color: rgba(#000, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+input[type="range"] {
+  /* WebKit: Chrome, Safari, Edge */
+  &::-webkit-slider-thumb, &::-webkit-slider-runnable-track {
+    cursor: grab !important;
+  }
+  /* Firefox */
+  &::-moz-range-thumb, &::-moz-range-track {
+    cursor: grab !important;
+  }
+  /* IE/Edge */
+  &::-ms-thumb, &::-ms-track {
+    cursor: grab !important;
+  }
+}
+
+.tk-iframe {
+  .tk-article-page__aside {
+    display: block;
+  }
+}
+.tk-theme-enhance__popover {
+  overflow: hidden;
+  ::-webkit-scrollbar {
+    display: block;
+  }
+  .tk-theme-enhance__content {
+    max-height: calc(100vh - 100px);
+    overflow: auto;
+    margin: -20px;
+    padding: 20px;
+  }
+}
+
+.tk-post-item__right .cover.default .cover-img {
+  background-size: cover !important;
+  border-radius: 4px !important;
+  overflow: hidden;
+}
+
+.tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
+  background-color: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(10px);
+}
+
+.vp-doc [class*='language-'] > button.copy.copied::before,
+.vp-doc [class*='language-'] > button.copy:hover.copied::before {
+  height: 20px;
+  content: '已复制';
+  border-right: 1px solid var(--vp-code-copy-code-hover-border-color);
+  border-radius: 4px;
+  color: var(--vp-c-tip-1);
+}
+
+.tk-body-bg-image~.tk-layout.Layout .VPContent.is-home .vp-doc>div {
+  padding: 0 32px !important;
+}
+
+.tk-pagination button, .tk-pager li {
+  background: rgba(var(--tk-pagination-bg-color), 0.6) !important;
+}
+.tk-pagination__input {
+  box-shadow: 0 0 0 1px var(--vp-c-text-2) inset !important;
+}
+
+.tk-footer-info p, .tk-footer-info__list {
+  color: var(--vp-c-text-2) !important;
+}
