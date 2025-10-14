@@ -42,7 +42,7 @@
       ]"
     >
       <template #home-hero-before>
-        <TkHomeBanner v-if="bannerTop">
+        <TkHomeBanner v-if="bannerEnabled && bannerTop">
           <template v-for="(_, name) in $slots" :key="name" #[name]="scope">
             <slot :name="name" v-bind="scope" />
           </template>
@@ -78,6 +78,7 @@
           <template v-for="(_, name) in $slots" :key="name" #[name]="scope">
             <template v-if="name === 'teek-theme-enhance-bottom'">
               <BannerTopSwitch v-if="bannerEnabled" @change="changeBannerTop" />
+              <TransparentSwitch />
               <slot name="teek-theme-enhance-bottom" v-bind="scope" />
             </template>
             <slot v-else :name="name" v-bind="scope" />
@@ -217,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, provide, inject, ref, watch, onMounted } from 'vue';
+import { computed, nextTick, provide, inject, ref, watch } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { useData, onContentUpdated } from 'vitepress';
 import type { TeekConfig, Language } from 'vitepress-theme-teek';
@@ -266,6 +267,7 @@ import {
 import { useFakeScrollbar } from '../composables/useFakeScrollBar';
 import ThemeSetting from './ThemeSetting.vue';
 import BannerTopSwitch from './BannerTopSwitch.vue';
+import TransparentSwitch from './TransparentSwitch.vue';
 
 defineOptions({ name: 'TeekLayout' });
 
@@ -375,7 +377,7 @@ watch(
   },
   { immediate: true, flush: 'post' }
 );
-watch(bannerTop, () => nextTick(initBannerTop));
+watch([bannerTop, currentStyle], () => nextTick(initBannerTop));
 
 const { watchSite, watchPages } = useWatchLogin();
 const { restart } = useRiskLink({

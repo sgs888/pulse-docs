@@ -1,3 +1,10 @@
+:root {
+  --tk-body-bg-img-nav-color: hsla(0,0%,100%,.6) !important;
+}
+.dark {
+  --tk-body-bg-img-nav-color: rgba(27,27,31,.6) !important;
+}
+
 html {
   position: relative;
   -ms-overflow-style: none;  /* IE 和 Edge */
@@ -71,11 +78,6 @@ input[type="range"] {
   overflow: hidden;
 }
 
-.tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
-  background-color: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(10px);
-}
-
 .vp-doc [class*='language-'] > button.copy.copied::before,
 .vp-doc [class*='language-'] > button.copy:hover.copied::before {
   height: 20px;
@@ -107,4 +109,8 @@ img {
     transform: scale(1.05);
     box-shadow: 0 0 12px rgba(0,0,0,.22);
   }
+}
+
+.VPImage:hover {
+  box-shadow: unset;
 }

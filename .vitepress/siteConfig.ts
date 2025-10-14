@@ -28,6 +28,10 @@ interface GlobalConfig {
   sidebarTrigger?: boolean;
   articleShare?: boolean;
   showRibbon?: boolean;
+  topArticle?: boolean;
+  category?: boolean;
+  tag?: boolean;
+  docAnalysis?: boolean;
   appendThemeColor?: ThemeColor[];
 }
 
@@ -119,6 +123,14 @@ export const globalConfig: GlobalConfig = {
   sidebarTrigger: true,
   // 是否显示彩带背景，仅blog主页和doc生效
   showRibbon: true,
+  // 是否显示置顶文章卡片
+  topArticle: true,
+  // 是否显示分类卡片
+  category: true,
+  // 是否显示标签卡片
+  tag: true,
+  // 是否显示站点统计卡片
+  docAnalysis: true,
   // 追加主题颜色, 不需要时设置为空即可
   appendThemeColor: [
     { label: '紫罗兰', value: 'violet', color: '#7166f0' },

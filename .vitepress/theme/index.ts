@@ -24,6 +24,8 @@ import './styles/code-bg.scss';
 import './styles/iframe.scss';
 import './styles/sidebar-icon.scss';
 import './styles/home-card.scss';
+import './styles/transparent.scss';
+import './styles/blur.scss';
 
 export default {
   extends: Teek,

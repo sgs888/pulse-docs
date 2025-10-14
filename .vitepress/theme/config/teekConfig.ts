@@ -20,6 +20,10 @@ const {
   fullscreenWallpaper,
   articleShare,
   sidebarTrigger,
+  topArticle,
+  category,
+  tag,
+  docAnalysis,
 } = globalConfig;
 
 const generateFooterConfig = () => {
@@ -134,7 +138,7 @@ export const teekConfig = defineTeekConfig({
   homeCardSort: ['topArticle', 'category', 'tag', 'docAnalysis', 'friendLink'],
   // 精选文章卡片配置
   topArticle: {
-    enabled: true,
+    enabled: topArticle ?? true,
     emptyLabel: '暂无精选文章',
     limit: 5,
     autoPage: false,
@@ -143,7 +147,7 @@ export const teekConfig = defineTeekConfig({
   },
   // 分类卡片配置
   category: {
-    enabled: true,
+    enabled: category ?? true,
     path: '/categories',
     moreLabel: '更多分类...',
     emptyLabel: '暂无文章分类',
@@ -164,7 +168,7 @@ export const teekConfig = defineTeekConfig({
   },
   // 标签卡片配置
   tag: {
-    enabled: true,
+    enabled: tag ?? true,
     path: '/tags',
     moreLabel: '更多 ...',
     emptyLabel: '暂无标签',
@@ -174,7 +178,7 @@ export const teekConfig = defineTeekConfig({
   },
   // 站点信息卡片配置
   docAnalysis: {
-    enabled: true, // 是否启用站点信息卡片
+    enabled: docAnalysis ?? true, // 是否启用站点信息卡片
     createTime, // 站点创建时间
     wordCount: true, // 是否开启文章页的字数统计
     readingTime: true, // 是否开启文章页的阅读时长统计
