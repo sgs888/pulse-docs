@@ -1,4 +1,5 @@
 import { isClient, useMounted, useScopeDispose } from 'vitepress-theme-teek';
+import { nextTick } from 'vue';
 
 interface UseRibbonOptions {
   /**
@@ -147,8 +148,8 @@ export const useRibbon = (options: UseRibbonOptions = {}) => {
         dom.removeEventListener('click', handleClick);
         dom.removeEventListener('touchstart', handleClick);
       }
-      if (canvas && canvas.parentNode) {
-        canvas.parentNode.removeChild(canvas);
+      if (canvas) {
+        document.body.removeChild(canvas);
       }
       canvas = null;
       ctx = null;
@@ -161,6 +162,10 @@ export const useRibbon = (options: UseRibbonOptions = {}) => {
 
   const stop = () => {
     cleanupFn();
+    const ribbonDom = document.getElementById('ribbon');
+    if (ribbonDom) {
+      document.body.removeChild(ribbonDom);
+    }
   };
 
   useMounted(() => {

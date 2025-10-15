@@ -1,6 +1,7 @@
 // @ts-ignore
 import { defineTeekConfig } from 'vitepress-theme-teek/config';
 import {
+  runConfig,
   siteConfig,
   globalConfig,
   bannerConfig,
@@ -250,12 +251,12 @@ export const teekConfig = defineTeekConfig({
     docAnalysis: true,
     docAnalysisOption: {},
     fileContentLoaderIgnore: [],
-    autoFrontmatter: false,
+    autoFrontmatter: runConfig.autoFrontmatter,
     // autoFrontmatter 插件配置项
     autoFrontmatterOption: {
       permalinkPrefix: '', // 自动生成 permalink 的固定前缀，如 pages、pages/demo，默认为 pages
       categories: true, // 是否自动生成 categories
-      recoverTransform: false, // 是否覆盖原有frontmatter
+      recoverTransform: runConfig.recoverTransform, // 是否覆盖原有frontmatter
       transform: (frontmatter, fileInfo) => {
         const relativePath = fileInfo.relativePath;
         frontmatter.permalink = relativePath.replace(/\.md$/, '');

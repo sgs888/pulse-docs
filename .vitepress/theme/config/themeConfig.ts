@@ -27,6 +27,9 @@ export const docThemeConfig: TeekConfig = {
 // 博客默认配置
 export const blogThemeConfig: TeekConfig = {
   ...commonThemeConfig,
+  banner: {
+    descStyle: 'switch'
+  }
 };
 
 // 博客大图配置

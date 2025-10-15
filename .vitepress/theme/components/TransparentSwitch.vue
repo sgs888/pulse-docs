@@ -65,7 +65,7 @@ const setBodyClass = () => {
   } else {
     body.classList.remove('tk-transparent');
   }
-  if (isBlur.value) {
+  if (isTransparent.value && isBlur.value) {
     body.classList.add('tk-blur');
   } else {
     body.classList.remove('tk-blur');

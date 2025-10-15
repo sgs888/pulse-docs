@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts" name="TeekLayoutProvider">
-import { watch, nextTick, ref, provide, computed, onMounted, onUnmounted } from 'vue';
+import { watch, nextTick, ref, provide, computed, onMounted } from 'vue';
 import { TeekConfig, useTeekConfig } from 'vitepress-theme-teek';
 import { teekConfigContext, clockIcon } from 'vitepress-theme-teek';
 import { siteConfig, globalConfig } from '../../siteConfig';
@@ -42,6 +42,7 @@ import NotFound from './404.vue';
 
 const ns = 'layout-provider';
 const createTime = siteConfig.createTime;
+const avatarTitle = siteConfig.blogger.avatarTitle ?? '';
 const {
   showRibbon,
   theme,
@@ -84,11 +85,14 @@ const watchRuntimeAndRibbon = async (layout: string, style: string) => {
   if (showRibbon && (
     (isHome && isBlog && style !== 'blog-body')
     || (isDoc && themeConfig.value.pageStyle)
-  )) startRibbon();
-  else stopRibbon();
+  )) {
+    startRibbon();
+  } else {
+    stopRibbon();
+  }
 };
 
-watch(frontmatter, newVal => setTimeout(() => watchRuntimeAndRibbon(newVal.layout, currentStyle.value), 700), {
+watch([frontmatter, currentStyle], ([newFrontmatter, newStyle]) => setTimeout(() => watchRuntimeAndRibbon(newFrontmatter.layout, newStyle), 700), {
   immediate: true,
   flush: 'post'
 });
@@ -108,7 +112,14 @@ const initThemeWhenCloseSwitch = () => {
   handleConfigSwitch(themeConfig.value, theme);
 }
 
+// 初始化头像title，覆盖默认文字“我好看吗”
+const initAvatarTitle = () => {
+  const avatar = document.querySelector('.tk-avatar');
+  avatar?.setAttribute('title', avatarTitle);
+}
+
 onMounted(() => {
+  initAvatarTitle();
   if (!themeSwitch) {
     initThemeWhenCloseSwitch();
   }

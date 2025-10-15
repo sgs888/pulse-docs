@@ -12,10 +12,19 @@ hero:
   actions:
     - theme: brand
       text: 开始阅读
-      link: /front/dart
+      link: /配置/快速开始
     - theme: alt
-      text: 更新记录
-      link: /O&M/linux
+      text: 文章分类
+      link: /categories
+    - theme: alt
+      text: 文章标签
+      link: /tags
+    - theme: alt
+      text: 文章清单
+      link: /articleOverview
+    - theme: alt
+      text: 文档归档
+      link: /archives
 
 features:
   - title: 📚 技术笔记

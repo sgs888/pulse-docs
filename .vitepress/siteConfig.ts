@@ -1,7 +1,12 @@
 import { DefaultTheme } from 'vitepress';
-import type { FriendLinkItem, Blogger, Author, FooterInfo } from 'vitepress-theme-teek';
+import type { FriendLinkItem, Blogger, Author, FooterInfo, Private } from 'vitepress-theme-teek';
 
 type VpConfig = DefaultTheme.Config;
+
+interface RunConfig {
+  autoFrontmatter: boolean;
+  recoverTransform: boolean;
+}
 
 interface SiteConfig {
   title: string;
@@ -10,7 +15,7 @@ interface SiteConfig {
     style: 'default' | 'types' | 'switch',
   },
   createTime: string;
-  blogger: Blogger & { show: boolean };
+  blogger: Blogger & { show: boolean; avatarTitle?: string };
   author: Author;
 }
 
@@ -66,11 +71,20 @@ type FooterConfig = Omit<FooterInfo, 'theme' | 'copyright'> & {
   customHtml?: string; // 仅在runTime为false时生效
 }
 
+// 启动时配置
+export const runConfig: RunConfig = {
+  // 启动/打包时是否自动生成frontmatter，建议添加新文件后开启运行一次
+  autoFrontmatter: false,
+  // 启动/打包时是否覆盖原有frontmatter，建议覆盖后关闭，否则手动添加的frontmatter会覆盖掉
+  recoverTransform: false,
+}
+
 // 博主信息
-export const bloggerInfo: Blogger = {
+export const bloggerInfo: Blogger & { avatarTitle?: string } = {
   name: 'Hyde', // 博主昵称
   slogan: '朝圣的使徒，正在走向编程的至高殿堂！', // 博主签名
   avatar: 'https://testingcf.jsdelivr.net/gh/Kele-Bingtang/static/user/avatar1.png', // 博主头像
+  avatarTitle: '测试',
   shape: 'circle-rotate', // 头像风格：square 为方形头像，circle 为圆形头像，circle-rotate 可支持鼠标悬停旋转，circle-rotate-last 将会持续旋转 59s
   circleBgImg: '/blog/bg4.webp', // 背景图片
   circleBgMask: true, // 遮罩层是否显示，仅当 shape 为 circle 且 circleBgImg 配置时有效
@@ -148,8 +162,19 @@ export const globalConfig: GlobalConfig = {
 export const headerConfig: HeaderConfig = {
   // 顶部导航
   nav: [
-    { text: 'Home', link: '/' },
-    { text: 'Examples', link: '/markdown-examples' }
+    { text: '配置', link: '/配置/快速开始' },
+    { text: '示例', link: '/示例文档/用法示例' },
+    {
+      text: '功能页',
+      items: [
+        { text: '归档页', link: '/archives' },
+        { text: '清单页', link: '/articleOverview' },
+        { text: '分类页', link: '/categories' },
+        { text: '标签页', link: '/tags' },
+        { text: '登录页', link: '/login' },
+        { text: '风险提示页', link: '/risk-link?target=https:/vp.teek.top', target: '_blank' },
+      ],
+    },
   ],
   // 顶部导航右侧社交图标
   navSocial: {
@@ -257,3 +282,15 @@ export const friendLinkList: FriendLinkItem[] = [
     link: 'http://niubin.site/'
   }
 ];
+
+// 私密文章配置
+const privateConfig: Private = {
+  // 是否开启私密文章功能
+  enabled: false,
+  // 登录过期时间：1d 代表 1 天，1h 代表 1 小时，仅支持这两个单位，不加单位代表秒。过期后访问私密文章重新输入用户名和密码。默认一天
+  expire: '1d',
+  // 开启是否在网页关闭或刷新后，清除登录状态，这样再次访问网页，需要重新登录
+  session: true,
+  // 是否使用站点级别登录功能，即第一次进入网站需要验证
+  siteLogin: false,
+}
