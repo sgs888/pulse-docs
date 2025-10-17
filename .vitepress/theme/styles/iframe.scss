@@ -78,6 +78,10 @@ input[type="range"] {
   overflow: hidden;
 }
 
+.tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
+  background-color: rgba(255, 255, 255, 1);
+}
+
 .vp-doc [class*='language-'] > button.copy.copied::before,
 .vp-doc [class*='language-'] > button.copy:hover.copied::before {
   height: 20px;
@@ -102,7 +106,7 @@ input[type="range"] {
   color: var(--vp-c-text-2) !important;
 }
 
-img:not(.tk-login__left img, .VPImage) {
+img:not(.tk-login__left img, .VPImage, .feature-img) {
   border-radius: 4px;
   transition: all 0.3s ease;
   &:hover {

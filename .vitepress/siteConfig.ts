@@ -37,6 +37,7 @@ interface GlobalConfig {
   category?: boolean;
   tag?: boolean;
   docAnalysis?: boolean;
+  backTop?: boolean;
   appendThemeColor?: ThemeColor[];
 }
 
@@ -84,7 +85,7 @@ export const bloggerInfo: Blogger & { avatarTitle?: string } = {
   name: 'Hyde', // 博主昵称
   slogan: '朝圣的使徒，正在走向编程的至高殿堂！', // 博主签名
   avatar: 'https://testingcf.jsdelivr.net/gh/Kele-Bingtang/static/user/avatar1.png', // 博主头像
-  avatarTitle: '测试',
+  avatarTitle: '', // hover头像时显示的文字，为空时不显示
   shape: 'circle-rotate', // 头像风格：square 为方形头像，circle 为圆形头像，circle-rotate 可支持鼠标悬停旋转，circle-rotate-last 将会持续旋转 59s
   circleBgImg: '/blog/bg4.webp', // 背景图片
   circleBgMask: true, // 遮罩层是否显示，仅当 shape 为 circle 且 circleBgImg 配置时有效
@@ -145,6 +146,8 @@ export const globalConfig: GlobalConfig = {
   tag: true,
   // 是否显示站点统计卡片
   docAnalysis: true,
+  // 是否开启返回到顶部按钮
+  backTop: true,
   // 追加主题颜色, 不需要时设置为空即可
   appendThemeColor: [
     { label: '紫罗兰', value: 'violet', color: '#7166f0' },
@@ -192,7 +195,8 @@ export const bannerConfig: BannerConfig = {
     '/blog/bg1.webp',
     '/blog/bg2.webp',
     '/blog/bg3.webp',
-    // '/blog/bg4.webp'
+    // '/blog/bg4.webp',
+    // '/blog/bg5.gif',
   ],
 }
 

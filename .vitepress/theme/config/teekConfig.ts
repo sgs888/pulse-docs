@@ -25,6 +25,7 @@ const {
   category,
   tag,
   docAnalysis,
+  backTop,
 } = globalConfig;
 
 const generateFooterConfig = () => {
@@ -66,9 +67,7 @@ export const teekConfig = defineTeekConfig({
   loading: false,
   homeCardListPosition: 'right', // 侧边栏位置，可选配置 left | right
   backTop: {
-    enabled: true,
-    content: 'icon',
-    // done: TkMessage => TkMessage.success('返回顶部成功') // 回到顶部后的回调
+    enabled: backTop ?? true,
   },
   // 代码块配置
   codeBlock: {

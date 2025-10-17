@@ -14,6 +14,10 @@
       <ContributeChart />
     </template>
 
+    <template #teek-back-top>
+      <BackTop v-if="backTopEnabled" />
+    </template>
+
     <template #not-found>
       <NotFound />
     </template>
@@ -38,6 +42,7 @@ import { useRuntime } from '../composables/useRuntime';
 import TeekLayout from './TeekLayout.vue';
 import ThemeSwitch from './ThemeSwitch.vue';
 import ContributeChart from './ContributeChart.vue';
+import BackTop from './BackTop.vue';
 import NotFound from './404.vue';
 
 const ns = 'layout-provider';
@@ -62,6 +67,11 @@ const bannerEnabled = computed(() => {
   const banner = frontmatter.value.banner ?? teekConfig.value.banner;
   const tkHomeEnabled = frontmatter.value.tk?.teekHome ?? teekConfig.value.teekHome;
   return banner && banner.enabled && tkHomeEnabled;
+});
+
+const backTopEnabled = computed(() => {
+  const backTop = frontmatter.value.backTop ?? teekConfig.value.backTop;
+  return backTop && backTop.enabled;
 });
 
 // 彩带背景

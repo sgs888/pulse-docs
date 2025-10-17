@@ -14,6 +14,15 @@
 $color: var(--tk-bg-color-elm);
 
 .tk-transparent {
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .VPButton {
+    .brand {
+
+    }
+  }
   .VPFeature {
     background-color: var(--tr-bg-soft) !important;
     border: 1px solid var(--tr-bg-soft) !important;
