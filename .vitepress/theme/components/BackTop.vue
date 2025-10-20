@@ -127,17 +127,17 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 .vitepress-backTop-main {
   z-index: 999;
   position: fixed;
-  bottom: 40px;
-  right: 30px;
+  bottom: 20px;
+  right: 20px;
   cursor: pointer;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--pulse-brand-gr) 0%, var(--pulse-brand-gr-1) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(107, 70, 193, 0.3);
+  box-shadow: 0 4px 20px var(--pulse-brand-tr-3);
   transition: all 0.3s ease;
 }
 
@@ -158,9 +158,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 }
 
 .vitepress-backTop-main:hover {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--pulse-brand-br) 0%, var(--pulse-brand-gr-br-1) 100%);
   transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(107, 70, 193, 0.4);
+  box-shadow: 0 6px 25px var(--pulse-brand-tr-4);
 }
 
 /* 进度圆环 */

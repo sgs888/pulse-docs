@@ -17,7 +17,7 @@
         v-model="blurSize"
         :disabled="isMobile"
         :min="1"
-        :max="10"
+        :max="20"
       />
     </div>
   </BaseTemplate>
