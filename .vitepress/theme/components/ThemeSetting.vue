@@ -36,14 +36,15 @@
 <script setup lang="ts" name="ThemeEnhance">
 import { useData } from 'vitepress';
 import {
-  mobileMaxWidthMedia,
   ns,
-  ThemeColorName,
+  mobileMaxWidthMedia,
   themeColorStorageKey,
-  ThemeEnhance,
   varNameList,
   TkIcon,
   TkPopover,
+  isClient,
+  ThemeColorName,
+  ThemeEnhance,
   useMediaQuery,
   useStorage,
   useTeekConfig,
@@ -92,6 +93,7 @@ const syncThemeColor = async () => {
 }
 
 watch([themeColorName, isDark], async () => {
+  if (!isClient) return;
   await syncThemeColor();
   if (disabledList.value.themeColor) {
     stopExtraTheme();

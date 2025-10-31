@@ -5,7 +5,7 @@ export const useFakeScrollbar = () => {
   const vpRouter = useVpRouter();
   const stateKey = 'updateScrollBar';
 
-  const scrollContainer = document.documentElement;
+  let scrollContainer = null;
   const scrollBarRef = ref<HTMLElement | null>(null);
   const thumbRef = ref<HTMLElement | null>(null);
 
@@ -133,6 +133,7 @@ export const useFakeScrollbar = () => {
   });
 
   onMounted(() => {
+    scrollContainer = document.documentElement;
     bindEvents();
     nextTick(updateAndSync);
   });

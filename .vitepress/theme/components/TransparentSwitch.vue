@@ -28,6 +28,7 @@ import {
   TkThemeEnhanceBaseTemplate as BaseTemplate,
   TkSwitch,
   TkInputSlide,
+  isClient,
   useCommon,
   useStorage,
 } from 'vitepress-theme-teek';
@@ -59,6 +60,7 @@ const isBlur = useStorage('tk:blur', false);
 const blurSize = useStorage('tk:blur-size', 5);
 
 const setBodyClass = () => {
+  if (!isClient) return;
   const body = document.body;
   if (isTransparent.value) {
     body.classList.add('tk-transparent');
@@ -88,7 +90,7 @@ watch([isTransparent, isBlur, blurSize], () => {
   display: flex;
   align-items: center;
 }
-.thin-slide:deep {
+:deep(.thin-slide) {
   margin-top: 8px;
   .tk-input-slide__label, .tk-input-slide__label__input {
     height: 18px !important;

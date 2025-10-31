@@ -1,5 +1,4 @@
 import { isClient, useMounted, useScopeDispose } from 'vitepress-theme-teek';
-import { nextTick } from 'vue';
 
 interface UseRibbonOptions {
   /**
@@ -162,6 +161,7 @@ export const useRibbon = (options: UseRibbonOptions = {}) => {
 
   const stop = () => {
     cleanupFn();
+    if (!isClient) return;
     const ribbonDom = document.getElementById('ribbon');
     if (ribbonDom) {
       document.body.removeChild(ribbonDom);

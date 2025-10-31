@@ -8,6 +8,7 @@ import {
   postConfig,
   footerConfig,
   friendLinkList,
+  siteAnalytics,
 } from '../../siteConfig';
 
 const {
@@ -176,6 +177,8 @@ export const teekConfig = defineTeekConfig({
     autoPage: false,
     pageSpeed: 5000
   },
+  // 站点分析配置
+  siteAnalytics,
   // 站点信息卡片配置
   docAnalysis: {
     enabled: docAnalysis ?? true, // 是否启用站点信息卡片

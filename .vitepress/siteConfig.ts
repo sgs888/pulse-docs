@@ -1,7 +1,16 @@
 import { DefaultTheme } from 'vitepress';
-import type { FriendLinkItem, Blogger, Author, FooterInfo, Private } from 'vitepress-theme-teek';
+import type {
+  FriendLinkItem,
+  Blogger,
+  Author,
+  FooterInfo,
+  Private,
+  SiteAnalytics,
+  SiteAnalyticsProvider,
+} from 'vitepress-theme-teek';
 
 type VpConfig = DefaultTheme.Config;
+type SiteAnalyticsType = keyof SiteAnalyticsProvider;
 
 interface RunConfig {
   autoFrontmatter: boolean;
@@ -298,3 +307,10 @@ const privateConfig: Private = {
   // 是否使用站点级别登录功能，即第一次进入网站需要验证
   siteLogin: false,
 }
+
+// 站点分析配置, 可参考https://vp.teek.top/reference/config/global-config.html#siteanalytics
+export const siteAnalytics: SiteAnalytics<SiteAnalyticsType>[] = [
+  /*{ provider: 'google', options: { id: '******' } },
+  { provider: 'baidu', options: { id: '******' } },
+  { provider: 'umami', options: { id: '******', src: '**' } },*/
+];
