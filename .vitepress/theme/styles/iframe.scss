@@ -114,3 +114,7 @@ img:not(.tk-login__left img, .VPImage, .feature-img) {
     box-shadow: 0 0 12px rgba(0,0,0,.22);
   }
 }
+
+.tk-login~div {
+  display: none !important;
+}

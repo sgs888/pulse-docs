@@ -1,8 +1,13 @@
 import { defineConfig, DefaultTheme } from 'vitepress';
+import dotenv from 'dotenv';
 import { teekConfig } from './theme/config/teekConfig';
 import { siteConfig, headerConfig } from './siteConfig';
 
 type VpConfig = DefaultTheme.Config;
+dotenv.config();
+const vitePressOutDir = process.env.VITE_PRESS_OUTPUT_DIR || './.vitepress/dist';
+const serverPort = process.env.EXPRESS_PORT || 3000;
+const vitePressPort = process.env.VITE_PRESS_PORT ? Number(process.env.VITE_PRESS_PORT) : 8000;
 const { title } = siteConfig;
 const {
   nav,
@@ -58,6 +63,7 @@ export default defineConfig({
   title,
   base: '/',
   srcDir: 'docs',
+  outDir: vitePressOutDir,
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
   cleanUrls: true,
   lastUpdated: true,
@@ -83,6 +89,16 @@ export default defineConfig({
     }
   },
   vite: {
-    publicDir: '../public'
+    publicDir: '../public',
+    server: {
+      port: vitePressPort,
+      proxy: {
+        '/api': {
+          target: `http://localhost:${serverPort}`, // Express 服务地址
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '/api')
+        }
+      }
+    }
   }
 });
