@@ -8,7 +8,7 @@
 
     <template v-if="frontmatter.loginPage === true">
       <slot name="teek-login-page">
-        <TkLoginPage v-show="!loading" />
+        <LoginPage v-show="!loading" />
       </slot>
     </template>
     <template v-if="frontmatter.riskLinkPage === true">
@@ -228,7 +228,6 @@ import {
   useEventListener,
   useTeekConfig,
   usePageState,
-  useWatchLogin,
   useRiskLink,
   localeContextKey,
   isClient,
@@ -258,16 +257,17 @@ import {
   TkArchivesPage,
   TkCataloguePage,
   TkArticleOverviewPage,
-  TkLoginPage,
   TkRiskLinkPage,
   TkSidebarTrigger,
   TkHomeFeature,
   TkRouteLoading,
 } from 'vitepress-theme-teek';
 import { useFakeScrollbar } from '../composables/useFakeScrollBar';
+import { useWatchLogin } from '../composables/useWatchLogin';
 import ThemeSetting from './ThemeSetting.vue';
 import BannerTopSwitch from './BannerTopSwitch.vue';
 import TransparentSwitch from './TransparentSwitch.vue';
+import LoginPage from './LoginPage.vue';
 
 defineOptions({ name: 'TeekLayout' });
 

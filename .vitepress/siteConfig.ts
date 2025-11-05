@@ -297,15 +297,18 @@ export const friendLinkList: FriendLinkItem[] = [
 ];
 
 // 私密文章配置
-const privateConfig: Private = {
+export const privateConfig: Private = {
   // 是否开启私密文章功能
   enabled: false,
   // 登录过期时间：1d 代表 1 天，1h 代表 1 小时，仅支持这两个单位，不加单位代表秒。过期后访问私密文章重新输入用户名和密码。默认一天
-  expire: '1d',
+  expire: '3h',
   // 开启是否在网页关闭或刷新后，清除登录状态，这样再次访问网页，需要重新登录
   session: true,
   // 是否使用站点级别登录功能，即第一次进入网站需要验证
   siteLogin: false,
+  pages: [
+    { username: 'admin', password: 'admin' }
+  ]
 }
 
 // 站点分析配置, 可参考https://vp.teek.top/reference/config/global-config.html#siteanalytics

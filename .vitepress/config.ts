@@ -1,19 +1,30 @@
-import { defineConfig, DefaultTheme } from 'vitepress';
+import { type DefaultTheme, defineConfigWithTheme } from 'vitepress';
+import type { TeekConfig } from 'vitepress-theme-teek';
+import { type PulseTheme, type Md5LoginInfo, PulseLoginType } from './theme/config/pulseConfig';
 import dotenv from 'dotenv';
 import { teekConfig } from './theme/config/teekConfig';
-import { siteConfig, headerConfig } from './siteConfig';
+import { siteConfig, headerConfig, privateConfig } from './siteConfig';
 
 type VpConfig = DefaultTheme.Config;
+
 dotenv.config();
 const vitePressOutDir = process.env.VITE_PRESS_OUTPUT_DIR || './.vitepress/dist';
 const serverPort = process.env.EXPRESS_PORT || 3000;
 const vitePressPort = process.env.VITE_PRESS_PORT ? Number(process.env.VITE_PRESS_PORT) : 8000;
+const isTeekPrivate = process.env.TEEK_PRIVATE === 'true';
+const privateType = process.env.PULSE_PRIVATE;
+const privateUsername = process.env.PULSE_USERNAME;
 const { title } = siteConfig;
 const {
   nav,
   navSocial,
   localSearch
 } = headerConfig;
+
+// MD5形式的登录信息，会暴露到客户端，非md5登录信息，请勿使用
+const md5LoginInfos: Md5LoginInfo[] = [
+  { username: privateUsername, password: '0192023a7bbd73250516f069df18b500' }
+];
 
 const generateSocialLinks = () => {
   if (!navSocial || (!navSocial.gitee && !navSocial.github)) {
@@ -58,7 +69,7 @@ const search: VpConfig['search'] = {
   }
 }
 
-export default defineConfig({
+export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
   extends: teekConfig,
   title,
   base: '/',
@@ -85,7 +96,17 @@ export default defineConfig({
     },
     docFooter: {
       prev: '上一篇',
-      next: '下一篇'
+      next: '下一篇',
+    },
+    // 覆盖siteConfig中的私密文章配置
+    private: isTeekPrivate ? privateConfig : undefined,
+    // 自定义配置
+    pulse: {
+      private: {
+        isTeek: isTeekPrivate,
+        type: privateType as PulseLoginType,
+        md5LoginInfos: md5LoginInfos,
+      }
     }
   },
   vite: {

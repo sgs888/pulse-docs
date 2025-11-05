@@ -8,13 +8,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node"]
+    "types": ["node"],
   },
   "include": [
     ".vitepress"
   ],
   "exclude": [
     "node_modules",
+    "dist",
+    "bin",
     "server",
   ]
 }
