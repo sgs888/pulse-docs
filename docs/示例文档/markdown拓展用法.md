@@ -1,7 +1,7 @@
 ---
 date: 2025-10-12 15:56:38
 title: markdown拓展用法
-permalink: 示例文档/markdown拓展用法
+permalink: /示例文档/markdown拓展用法
 categories:
   - 示例文档
 ---

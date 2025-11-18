@@ -23,3 +23,8 @@ export type PulseTheme = { pulse: PulseConfig };
 export const isPulseLoginType = (value: any) => {
   return Object.values(PulseLoginType).includes(value);
 }
+
+export interface PostConfig {
+  url: string;
+  private?: boolean;
+}

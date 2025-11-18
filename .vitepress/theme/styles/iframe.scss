@@ -106,7 +106,7 @@ input[type="range"] {
   color: var(--vp-c-text-2) !important;
 }
 
-img:not(.tk-login__left img, .VPImage, .feature-img) {
+img:not(.tk-login img, .VPImage, .feature-img) {
   border-radius: 4px;
   transition: all 0.3s ease;
   &:hover {

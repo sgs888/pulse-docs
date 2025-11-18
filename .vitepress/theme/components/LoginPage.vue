@@ -68,9 +68,12 @@ import {
   loginUrlKeyMap,
   defaultPrivateConfig
 } from 'vitepress-theme-teek';
+import { md5 } from 'js-md5';
+import { usePwdCrypto } from '../composables/usePwdCrypto';
 import { usePulseConfig } from '../composables/usePulseConfig';
 import { PulseLoginType, isPulseLoginType } from '../config/pulseConfig';
-import { md5 } from 'js-md5';
+import { getPublicPem, loginApi } from '../../request/login';
+import { pulseTokenKey } from '../../request/login/constants';
 
 defineOptions({ name: 'LoginPage' });
 
@@ -79,6 +82,7 @@ const router = useRouter();
 const { frontmatter } = useData();
 const posts = usePosts();
 const { t } = useLocale();
+const { encryptWithPublicPem } = usePwdCrypto();
 const { getTeekConfigRef } = useTeekConfig();
 const { getPulseConfig } = usePulseConfig();
 const privateConfig = getTeekConfigRef<Private>('private', defaultPrivateConfig);
@@ -266,14 +270,33 @@ const doMd5Login = () => {
   if (isLogin) {
     TkMessage.success({ message: t('tk.login.loginSuccess'), plain: true });
     router.go(toPath || '/');
-  } else TkMessage.error({ message: t('tk.login.loginError'), plain: true });
+  } else {
+    TkMessage.error({ message: t('tk.login.loginError'), plain: true });
+  }
 }
 
 /**
  * 执行Express登录操作
  */
-const doExpressLogin = () => {
+const doExpressLogin = async () => {
+  const publicPem = await getPublicPem();
+  const encryptedBytes = encryptWithPublicPem(md5(loginForm.password.model), publicPem);
+  const loginInfo = { username: loginForm.username.model, password: encryptedBytes };
+  const { success, data } = await loginApi(loginInfo);
+  if (success) {
+    const { searchParams } = new URL(window.location.href);
+    const toPath = searchParams.get(loginUrlKeyMap.toPath);
 
+    const payload = {
+      ...data,
+      loginTime: new Date().getTime(),
+    }
+    sessionStorage.setItem(pulseTokenKey, JSON.stringify(payload));
+    TkMessage.success({ message: t('tk.login.loginSuccess'), plain: true });
+    await router.go(toPath || '/');
+  } else {
+    TkMessage.error({ message: t('tk.login.loginError'), plain: true });
+  }
 }
 
 /**

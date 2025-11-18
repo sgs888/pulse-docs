@@ -261,7 +261,7 @@ export const teekConfig = defineTeekConfig({
       recoverTransform: runConfig.recoverTransform, // 是否覆盖原有frontmatter
       transform: (frontmatter, fileInfo) => {
         const relativePath = fileInfo.relativePath;
-        frontmatter.permalink = relativePath.replace(/\.md$/, '');
+        frontmatter.permalink = '/' + relativePath.replace(/\.md$/, '');
         return frontmatter;
       }
     }

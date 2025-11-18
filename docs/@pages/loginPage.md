@@ -1,5 +1,5 @@
 ---
-permalink: login
+permalink: /login
 layout: false
 loginPage: true
 logo: /logo.png

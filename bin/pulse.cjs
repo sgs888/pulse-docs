@@ -17,36 +17,9 @@ switch (command) {
     break;
   default:
     console.log('❌ Unknown command. Usage:');
-    console.log('   node build-server.js dev    - Start development server with nodemon');
-    console.log('   node build-server.js build  - Build production bundle');
+    console.log('   node pulse.cjs dev    - Start development server with nodemon');
+    console.log('   node pulse.cjs build  - Build production bundle');
     process.exit(1);
-}
-
-// 启动开发服务器
-function startDevServer() {
-  console.log('🚀 Starting development server...');
-
-  // 检查 nodemon 是否安装
-  const nodemonPath = require.resolve('nodemon/bin/nodemon');
-
-  // 使用 spawn 启动 nodemon 进程，并继承当前进程的 stdio
-  const child = spawn(
-    'node',
-    [nodemonPath, 'server/index.cjs'],
-    { stdio: 'inherit' } // 关键！让子进程的输出显示在父进程的终端上
-  );
-
-  // 监听子进程退出
-  child.on('close', (code) => {
-    console.log(`Development server stopped with code ${code}`);
-    process.exit(code);
-  });
-
-  // 监听错误
-  child.on('error', (err) => {
-    console.error('❌ Failed to start nodemon:', err);
-    process.exit(1);
-  });
 }
 
 function spawnAsync(command, args, options = {}) {
@@ -69,6 +42,39 @@ function spawnAsync(command, args, options = {}) {
     child.on('error', (err) => {
       reject(err);
     });
+  });
+}
+
+// 启动开发服务器
+function startDevServer() {
+  console.log('🚀 Starting development server...');
+
+  // 检查 nodemon 是否安装
+  const nodemonPath = require.resolve('nodemon/bin/nodemon');
+
+  // 使用 spawn 启动 nodemon 进程，并继承当前进程的 stdio
+  const child = spawn(
+    'node',
+    [nodemonPath, 'server/index.cjs'],
+    {
+      stdio: 'inherit', // 关键！让子进程的输出显示在父进程的终端上
+      env: {
+        ...process.env,
+        NODE_ENV: 'development',
+      }
+    }
+  );
+
+  // 监听子进程退出
+  child.on('close', (code) => {
+    console.log(`Development server stopped with code ${code}`);
+    process.exit(code);
+  });
+
+  // 监听错误
+  child.on('error', (err) => {
+    console.error('❌ Failed to start nodemon:', err);
+    process.exit(1);
   });
 }
 
