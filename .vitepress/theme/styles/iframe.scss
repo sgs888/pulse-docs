@@ -1,3 +1,10 @@
+:root {
+  --tk-body-bg-img-nav-color: hsla(0,0%,100%,.6) !important;
+}
+.dark {
+  --tk-body-bg-img-nav-color: rgba(27,27,31,.6) !important;
+}
+
 html {
   position: relative;
   -ms-overflow-style: none;  /* IE 和 Edge */
@@ -72,8 +79,7 @@ input[type="range"] {
 }
 
 .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
-  background-color: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 1);
 }
 
 .vp-doc [class*='language-'] > button.copy.copied::before,
@@ -100,11 +106,15 @@ input[type="range"] {
   color: var(--vp-c-text-2) !important;
 }
 
-img {
+img:not(.tk-login img, .VPImage, .feature-img) {
   border-radius: 4px;
   transition: all 0.3s ease;
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 0 12px rgba(0,0,0,.22);
   }
+}
+
+.tk-login~div {
+  display: none !important;
 }

@@ -1,7 +1,21 @@
 import { DefaultTheme } from 'vitepress';
-import type { FriendLinkItem, Blogger, Author, FooterInfo } from 'vitepress-theme-teek';
+import type {
+  FriendLinkItem,
+  Blogger,
+  Author,
+  FooterInfo,
+  Private,
+  SiteAnalytics,
+  SiteAnalyticsProvider,
+} from 'vitepress-theme-teek';
 
 type VpConfig = DefaultTheme.Config;
+type SiteAnalyticsType = keyof SiteAnalyticsProvider;
+
+interface RunConfig {
+  autoFrontmatter: boolean;
+  recoverTransform: boolean;
+}
 
 interface SiteConfig {
   title: string;
@@ -10,7 +24,7 @@ interface SiteConfig {
     style: 'default' | 'types' | 'switch',
   },
   createTime: string;
-  blogger: Blogger & { show: boolean };
+  blogger: Blogger & { show: boolean; avatarTitle?: string };
   author: Author;
 }
 
@@ -28,6 +42,11 @@ interface GlobalConfig {
   sidebarTrigger?: boolean;
   articleShare?: boolean;
   showRibbon?: boolean;
+  topArticle?: boolean;
+  category?: boolean;
+  tag?: boolean;
+  docAnalysis?: boolean;
+  backTop?: boolean;
   appendThemeColor?: ThemeColor[];
 }
 
@@ -62,11 +81,20 @@ type FooterConfig = Omit<FooterInfo, 'theme' | 'copyright'> & {
   customHtml?: string; // 仅在runTime为false时生效
 }
 
+// 启动时配置
+export const runConfig: RunConfig = {
+  // 启动/打包时是否自动生成frontmatter，建议添加新文件后开启运行一次
+  autoFrontmatter: false,
+  // 启动/打包时是否覆盖原有frontmatter，建议覆盖后关闭，否则手动添加的frontmatter会覆盖掉
+  recoverTransform: false,
+}
+
 // 博主信息
-export const bloggerInfo: Blogger = {
+export const bloggerInfo: Blogger & { avatarTitle?: string } = {
   name: 'Hyde', // 博主昵称
   slogan: '朝圣的使徒，正在走向编程的至高殿堂！', // 博主签名
   avatar: 'https://testingcf.jsdelivr.net/gh/Kele-Bingtang/static/user/avatar1.png', // 博主头像
+  avatarTitle: '', // hover头像时显示的文字，为空时不显示
   shape: 'circle-rotate', // 头像风格：square 为方形头像，circle 为圆形头像，circle-rotate 可支持鼠标悬停旋转，circle-rotate-last 将会持续旋转 59s
   circleBgImg: '/blog/bg4.webp', // 背景图片
   circleBgMask: true, // 遮罩层是否显示，仅当 shape 为 circle 且 circleBgImg 配置时有效
@@ -119,6 +147,16 @@ export const globalConfig: GlobalConfig = {
   sidebarTrigger: true,
   // 是否显示彩带背景，仅blog主页和doc生效
   showRibbon: true,
+  // 是否显示置顶文章卡片
+  topArticle: true,
+  // 是否显示分类卡片
+  category: true,
+  // 是否显示标签卡片
+  tag: true,
+  // 是否显示站点统计卡片
+  docAnalysis: true,
+  // 是否开启返回到顶部按钮
+  backTop: true,
   // 追加主题颜色, 不需要时设置为空即可
   appendThemeColor: [
     { label: '紫罗兰', value: 'violet', color: '#7166f0' },
@@ -136,8 +174,19 @@ export const globalConfig: GlobalConfig = {
 export const headerConfig: HeaderConfig = {
   // 顶部导航
   nav: [
-    { text: 'Home', link: '/' },
-    { text: 'Examples', link: '/markdown-examples' }
+    { text: '配置', link: '/配置/快速开始' },
+    { text: '示例', link: '/示例文档/用法示例' },
+    {
+      text: '功能页',
+      items: [
+        { text: '归档页', link: '/archives' },
+        { text: '清单页', link: '/articleOverview' },
+        { text: '分类页', link: '/categories' },
+        { text: '标签页', link: '/tags' },
+        { text: '登录页', link: '/login' },
+        { text: '风险提示页', link: '/risk-link?target=https:/vp.teek.top', target: '_blank' },
+      ],
+    },
   ],
   // 顶部导航右侧社交图标
   navSocial: {
@@ -155,7 +204,8 @@ export const bannerConfig: BannerConfig = {
     '/blog/bg1.webp',
     '/blog/bg2.webp',
     '/blog/bg3.webp',
-    // '/blog/bg4.webp'
+    // '/blog/bg4.webp',
+    // '/blog/bg5.gif',
   ],
 }
 
@@ -244,4 +294,26 @@ export const friendLinkList: FriendLinkItem[] = [
     avatar: 'http://niubin.site/logo.jpg',
     link: 'http://niubin.site/'
   }
+];
+
+// 私密文章配置
+export const privateConfig: Private = {
+  // 是否开启私密文章功能
+  enabled: false,
+  // 登录过期时间：1d 代表 1 天，1h 代表 1 小时，仅支持这两个单位，不加单位代表秒。过期后访问私密文章重新输入用户名和密码。默认一天
+  expire: '3h',
+  // 开启是否在网页关闭或刷新后，清除登录状态，这样再次访问网页，需要重新登录
+  session: true,
+  // 是否使用站点级别登录功能，即第一次进入网站需要验证
+  siteLogin: false,
+  pages: [
+    { username: 'admin', password: 'admin' }
+  ]
+}
+
+// 站点分析配置, 可参考https://vp.teek.top/reference/config/global-config.html#siteanalytics
+export const siteAnalytics: SiteAnalytics<SiteAnalyticsType>[] = [
+  /*{ provider: 'google', options: { id: '******' } },
+  { provider: 'baidu', options: { id: '******' } },
+  { provider: 'umami', options: { id: '******', src: '**' } },*/
 ];

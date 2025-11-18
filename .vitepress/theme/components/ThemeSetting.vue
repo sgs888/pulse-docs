@@ -34,20 +34,29 @@
 </template>
 
 <script setup lang="ts" name="ThemeEnhance">
-import type { ThemeEnhance } from 'vitepress-theme-teek';
-import { computed } from 'vue';
-import { useMediaQuery } from 'vitepress-theme-teek';
-import { useTeekConfig } from 'vitepress-theme-teek';
-import { TkIcon } from 'vitepress-theme-teek';
-import { TkPopover } from 'vitepress-theme-teek';
-import { ns } from 'vitepress-theme-teek';
-import { mobileMaxWidthMedia } from 'vitepress-theme-teek';
+import { useData } from 'vitepress';
+import {
+  ns,
+  mobileMaxWidthMedia,
+  themeColorStorageKey,
+  varNameList,
+  TkIcon,
+  TkPopover,
+  isClient,
+  ThemeColorName,
+  ThemeEnhance,
+  useMediaQuery,
+  useStorage,
+  useTeekConfig,
+} from 'vitepress-theme-teek';
+import { computed, nextTick, ref, watch } from 'vue';
 import LayoutSwitch from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/LayoutSwitch.vue';
 import LayoutPageWidthSlide from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/LayoutPageWidthSlide.vue';
 import LayoutDocWidthSlide from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/LayoutDocWidthSlide.vue';
 import ThemeColor from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/ThemeColor.vue';
 import Spotlight from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/Spotlight.vue';
 import SpotlightStyle from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/SpotlightStyle.vue';
+import { useExtraThemeColor } from '../composables/useExtraThemeColor.js';
 
 const settingIcon = `<svg viewBox="0 0 1024 1024" width="48" height="48">
   <path d="M512 341.33c-94.1 0-170.67 76.56-170.67 170.67S417.9 682.67 512 682.67 682.67 606.1 682.67 512 606.1 341.33 512 341.33z m0 256c-47.06 0-85.33-38.27-85.33-85.33s38.27-85.33 85.33-85.33 85.33 38.27 85.33 85.33-38.27 85.33-85.33 85.33z" fill="currentColor" />
@@ -56,10 +65,15 @@ const settingIcon = `<svg viewBox="0 0 1024 1024" width="48" height="48">
 
 defineOptions({ name: 'ThemeEnhance' });
 
+const { isDark } = useData();
 const { getTeekConfigRef } = useTeekConfig();
 const themeEnhanceConfig = getTeekConfigRef<ThemeEnhance>('themeEnhance', { position: 'top' });
 
 const isMobile = useMediaQuery(mobileMaxWidthMedia);
+const themeColorName = useStorage(themeColorStorageKey,
+  themeEnhanceConfig.value.themeColor?.defaultColorName || ThemeColorName.vpDefault);
+
+const themeColor = ref();
 
 const disabledList = computed(() => {
   return {
@@ -68,6 +82,27 @@ const disabledList = computed(() => {
     spotlight: themeEnhanceConfig.value.spotlight?.disabled ?? false
   };
 });
+
+const { start: startExtraTheme, stop: stopExtraTheme } = useExtraThemeColor(themeColor);
+
+// 同步主题色
+const syncThemeColor = async () => {
+  await nextTick();
+  const computedStyle = getComputedStyle(document.documentElement);
+  themeColor.value = computedStyle.getPropertyValue(varNameList.vpBrand1);
+}
+
+watch([themeColorName, isDark], async () => {
+  if (!isClient) return;
+  await syncThemeColor();
+  if (disabledList.value.themeColor) {
+    stopExtraTheme();
+  } else {
+    startExtraTheme();
+  }
+}, { immediate: true });
+
+
 </script>
 <style lang="scss" scoped>
 .setting-icon:hover {

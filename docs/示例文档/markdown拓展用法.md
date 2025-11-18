@@ -1,3 +1,10 @@
+---
+date: 2025-10-12 15:56:38
+title: markdown拓展用法
+permalink: /示例文档/markdown拓展用法
+categories:
+  - 示例文档
+---
 VitePress 带有内置的 Markdown 扩展，可参考[文档](https://vitepress.dev/zh/guide/markdown)，常用的扩展如下：
 
 ::: danger

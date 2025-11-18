@@ -1,12 +1,14 @@
 // @ts-ignore
 import { defineTeekConfig } from 'vitepress-theme-teek/config';
 import {
+  runConfig,
   siteConfig,
   globalConfig,
   bannerConfig,
   postConfig,
   footerConfig,
   friendLinkList,
+  siteAnalytics,
 } from '../../siteConfig';
 
 const {
@@ -20,6 +22,11 @@ const {
   fullscreenWallpaper,
   articleShare,
   sidebarTrigger,
+  topArticle,
+  category,
+  tag,
+  docAnalysis,
+  backTop,
 } = globalConfig;
 
 const generateFooterConfig = () => {
@@ -61,9 +68,7 @@ export const teekConfig = defineTeekConfig({
   loading: false,
   homeCardListPosition: 'right', // 侧边栏位置，可选配置 left | right
   backTop: {
-    enabled: true,
-    content: 'icon',
-    // done: TkMessage => TkMessage.success('返回顶部成功') // 回到顶部后的回调
+    enabled: backTop ?? true,
   },
   // 代码块配置
   codeBlock: {
@@ -134,7 +139,7 @@ export const teekConfig = defineTeekConfig({
   homeCardSort: ['topArticle', 'category', 'tag', 'docAnalysis', 'friendLink'],
   // 精选文章卡片配置
   topArticle: {
-    enabled: true,
+    enabled: topArticle ?? true,
     emptyLabel: '暂无精选文章',
     limit: 5,
     autoPage: false,
@@ -143,7 +148,7 @@ export const teekConfig = defineTeekConfig({
   },
   // 分类卡片配置
   category: {
-    enabled: true,
+    enabled: category ?? true,
     path: '/categories',
     moreLabel: '更多分类...',
     emptyLabel: '暂无文章分类',
@@ -164,7 +169,7 @@ export const teekConfig = defineTeekConfig({
   },
   // 标签卡片配置
   tag: {
-    enabled: true,
+    enabled: tag ?? true,
     path: '/tags',
     moreLabel: '更多 ...',
     emptyLabel: '暂无标签',
@@ -172,9 +177,11 @@ export const teekConfig = defineTeekConfig({
     autoPage: false,
     pageSpeed: 5000
   },
+  // 站点分析配置
+  siteAnalytics,
   // 站点信息卡片配置
   docAnalysis: {
-    enabled: true, // 是否启用站点信息卡片
+    enabled: docAnalysis ?? true, // 是否启用站点信息卡片
     createTime, // 站点创建时间
     wordCount: true, // 是否开启文章页的字数统计
     readingTime: true, // 是否开启文章页的阅读时长统计
@@ -246,15 +253,15 @@ export const teekConfig = defineTeekConfig({
     docAnalysis: true,
     docAnalysisOption: {},
     fileContentLoaderIgnore: [],
-    autoFrontmatter: false,
+    autoFrontmatter: runConfig.autoFrontmatter,
     // autoFrontmatter 插件配置项
     autoFrontmatterOption: {
       permalinkPrefix: '', // 自动生成 permalink 的固定前缀，如 pages、pages/demo，默认为 pages
       categories: true, // 是否自动生成 categories
-      recoverTransform: false, // 是否覆盖原有frontmatter
+      recoverTransform: runConfig.recoverTransform, // 是否覆盖原有frontmatter
       transform: (frontmatter, fileInfo) => {
         const relativePath = fileInfo.relativePath;
-        frontmatter.permalink = relativePath.replace(/\.md$/, '');
+        frontmatter.permalink = '/' + relativePath.replace(/\.md$/, '');
         return frontmatter;
       }
     }

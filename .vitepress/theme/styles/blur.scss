@@ -1,0 +1,27 @@
+$blur: var(--tk-blur-size);
+
+.tk-blur {
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
+    backdrop-filter: blur($blur);
+  }
+  .VPMenu {
+    backdrop-filter: blur($blur);
+  }
+  .VPButton {
+    backdrop-filter: blur($blur);
+  }
+  .VPFeature {
+    backdrop-filter: blur($blur);
+  }
+  .tk-post-item, .tk-page-card {
+    backdrop-filter: blur($blur);
+    will-change: transform;
+    &:hover {
+      transform: scale(1) !important;
+    }
+  }
+
+  .tk-popover {
+    backdrop-filter: blur($blur);
+  }
+}

@@ -1,0 +1,50 @@
+:root {
+  --tr-bg-soft: #f6f6f751;
+  --tr-bg-color: #ffffffA2;
+  --tr-bg-color-deep: #ffffff80;
+  --tr-border-color: #e2e2e380;
+  --tr-btn-bg-color: #ebebefa2;
+  --tr-btn-bg-color-hover: #ebebef80;
+}
+.dark {
+  --tr-bg-soft: #20212751;
+  --tr-bg-color: #202127A2;
+  --tr-bg-color-deep: #20212780;
+  --tr-border-color: #2e2e3280;
+  --tr-btn-bg-color: #32363fa2;
+  --tr-btn-bg-color-hover: #32363f80;
+}
+
+$color: var(--tk-bg-color-elm);
+
+.tk-transparent {
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+  .VPMenu {
+    background-color: var(--tr-bg-color) !important;
+  }
+  .VPButton.brand {
+    background-color: var(--pulse-brand-tr-4);
+    &:hover {
+      background-color: var(--pulse-brand-tr-6);
+    }
+  }
+  .VPButton.alt {
+    background-color: var(--tr-btn-bg-color);
+    &:hover {
+      background-color: var(--tr-btn-bg-color-hover);
+    }
+  }
+  .VPFeature {
+    background-color: var(--tr-bg-soft) !important;
+    border: 1px solid var(--tr-bg-soft) !important;
+  }
+  .tk-post-item, .tk-page-card {
+    background-color: var(--tr-bg-color) !important;
+  }
+  .tk-popover {
+    background-color: var(--tr-bg-color-deep) !important;
+    border: 1px solid var(--tr-border-color) !important;
+  }
+}
