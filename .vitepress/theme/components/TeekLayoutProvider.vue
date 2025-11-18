@@ -18,6 +18,10 @@
       <BackTop v-if="backTopEnabled" />
     </template>
 
+    <template #teek-home-post-list="{ currentPosts, transitionName }">
+      <HomePostItem :current-posts="currentPosts" :transition-name="transitionName" />
+    </template>
+
     <template #not-found>
       <NotFound />
     </template>
@@ -43,6 +47,7 @@ import TeekLayout from './TeekLayout.vue';
 import ThemeSwitch from './ThemeSwitch.vue';
 import ContributeChart from './ContributeChart.vue';
 import BackTop from './BackTop.vue';
+import HomePostItem from './HomePostItem.vue';
 import NotFound from './404.vue';
 
 const ns = 'layout-provider';
