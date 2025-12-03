@@ -107,6 +107,10 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
         isTeek: isTeekPrivate,
         type: privateType as PulseLoginType,
         md5LoginInfos: md5LoginInfos,
+      },
+      cursor: {
+        enabled: true,
+        theme: 'default',
       }
     }
   },

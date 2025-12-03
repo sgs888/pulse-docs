@@ -26,6 +26,7 @@ import './styles/sidebar-icon.scss';
 import './styles/home-card.scss';
 import './styles/transparent.scss';
 import './styles/blur.scss';
+import './styles/cursor/index.scss';
 
 export default {
   extends: Teek,

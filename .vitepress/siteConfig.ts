@@ -146,7 +146,7 @@ export const globalConfig: GlobalConfig = {
   // 是否开启侧边栏收缩按钮
   sidebarTrigger: true,
   // 是否显示彩带背景，仅blog主页和doc生效
-  showRibbon: true,
+  showRibbon: false,
   // 是否显示置顶文章卡片
   topArticle: true,
   // 是否显示分类卡片

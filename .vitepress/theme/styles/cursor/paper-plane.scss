@@ -1,0 +1,12 @@
+$basePath: '../../cursors/paperPlane';
+
+html[data-cursor-theme="paperPlane"] {
+  --pulse-cursor-default: url('#{$basePath}/default.png') 6 7;
+  --pulse-cursor-pointer: url('#{$basePath}/pointer.png') 3 3;
+  --pulse-cursor-text: url('#{$basePath}/text.png') 16 17;
+  --pulse-cursor-grab: url('#{$basePath}/grab.png') 16 16;
+  --pulse-cursor-help: url('#{$basePath}/help.png') 3 3;
+  --pulse-cursor-move: url('#{$basePath}/move.png') 16 16;
+  --pulse-cursor-not-allowed: url('#{$basePath}/notAllowed.png') 16 16;
+  --pulse-cursor-cross: url('#{$basePath}/cross.png') 16 16;
+}

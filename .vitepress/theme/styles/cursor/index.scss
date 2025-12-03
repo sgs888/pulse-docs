@@ -1,0 +1,86 @@
+@use './mac.scss';
+@use './paper-fold.scss';
+@use './kronii.scss';
+
+$default: var(--pulse-cursor-default);
+$pointer: var(--pulse-cursor-pointer);
+$text: var(--pulse-cursor-text);
+$grab: var(--pulse-cursor-grab);
+$grabbing: var(--pulse-cursor-grabbing);
+$help: var(--pulse-cursor-help);
+$move: var(--pulse-cursor-move);
+$not-allowed: var(--pulse-cursor-not-allowed);
+$cross: var(--pulse-cursor-cross);
+
+/* 覆盖 default 类型 */
+html {
+  cursor: $default, default;
+}
+
+/* 覆盖 pointer 类型 */
+a,
+button,
+input[type="submit"],
+input[type="button"],
+[onclick],
+.role-button,
+[role="button"],
+button:enabled,
+[role="button"]:enabled {
+  cursor: $pointer, pointer;
+}
+
+.cursor-pointer,
+[style*="cursor: pointer"],
+[style*="cursor: hand"] {
+  cursor: $pointer, pointer;
+}
+
+/* 覆盖 text 类型 */
+input,
+textarea,
+h1, h2, h3, h4, h5, h6, p,
+[contenteditable="true"] {
+  cursor: $text, text;
+}
+
+.cursor-text,
+[style*="cursor: text"] {
+  cursor: $text, text;
+}
+
+/* 覆盖 move 类型 */
+[draggable="true"] {
+  cursor: $move, move;
+}
+
+/* teek覆盖 */
+.tk-pointer,
+.hover-color,
+.tk-theme-enhance__switch,
+.tk-segmented-item,
+.tk-banner-content__desc .switch,
+.tk-theme-enhance__theme-color .color-wrapper,
+.tk-theme-enhance .tk-icon {
+  cursor: $pointer, pointer !important;
+}
+.tk-theme-enhance__helper {
+  cursor: $help, help !important;
+}
+.disabled {
+  cursor: $not-allowed, not-allowed !important;
+}
+input[type="range"] {
+  /* WebKit: Chrome, Safari, Edge */
+  &::-webkit-slider-thumb, &::-webkit-slider-runnable-track {
+    cursor: $grab, grab;
+  }
+  /* Firefox */
+  &::-moz-range-thumb, &::-moz-range-track {
+    cursor: $grab, grab;
+  }
+  /* IE/Edge */
+  &::-ms-thumb, &::-ms-track {
+    cursor: $grab, grab;
+  }
+}

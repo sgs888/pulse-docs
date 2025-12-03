@@ -14,6 +14,10 @@
       <ContributeChart />
     </template>
 
+    <template #teek-right-bottom-before>
+      <CursorSetting />
+    </template>
+
     <template #teek-back-top>
       <BackTop v-if="backTopEnabled" />
     </template>
@@ -49,6 +53,7 @@ import ContributeChart from './ContributeChart.vue';
 import BackTop from './BackTop.vue';
 import HomePostItem from './HomePostItem.vue';
 import NotFound from './404.vue';
+import CursorSetting from './CursorSetting.vue';
 
 const ns = 'layout-provider';
 const createTime = siteConfig.createTime;
