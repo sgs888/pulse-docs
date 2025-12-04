@@ -1,0 +1,12 @@
+$basePath: '../../cursors/angryBirds';
+
+html[data-cursor-theme="angryBirds"] {
+  --pulse-cursor-default: url('#{$basePath}/default.png') 0 0;
+  --pulse-cursor-pointer: url('#{$basePath}/pointer.png') 0 0;
+  --pulse-cursor-text: url('#{$basePath}/text.png') 11 14;
+  --pulse-cursor-grab: url('#{$basePath}/grab.png') 16 16;
+  --pulse-cursor-help: url('#{$basePath}/help.png') 0 0;
+  --pulse-cursor-move: url('#{$basePath}/move.png') 3 11;
+  --pulse-cursor-not-allowed: url('#{$basePath}/notAllowed.png') 16 16;
+  --pulse-cursor-cross: url('#{$basePath}/cross.png') 16 16;
+}

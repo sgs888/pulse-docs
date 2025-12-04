@@ -1,0 +1,12 @@
+$basePath: '../../cursors/retro';
+
+html[data-cursor-theme="retro"] {
+  --pulse-cursor-default: url('#{$basePath}/default.png') 10 7;
+  --pulse-cursor-pointer: url('#{$basePath}/pointer.png') 15 7;
+  --pulse-cursor-text: url('#{$basePath}/text.png') 16 16;
+  --pulse-cursor-grab: url('#{$basePath}/grab.png') 16 8;
+  --pulse-cursor-help: url('#{$basePath}/help.png') 8 5;
+  --pulse-cursor-move: url('#{$basePath}/move.png') 16 16;
+  --pulse-cursor-not-allowed: url('#{$basePath}/notAllowed.png') 8 5;
+  --pulse-cursor-cross: url('#{$basePath}/cross.png') 16 16;
+}

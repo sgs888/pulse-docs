@@ -142,7 +142,7 @@ onUnmounted(() => {
     height: 20px;
     line-height: 20px;
     color: var(--tk-popover-color);
-    font-size: 12px;
+    font-size: 10px;
     text-align: center;
   }
 }
