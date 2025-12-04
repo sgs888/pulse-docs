@@ -1,6 +1,7 @@
-import { readonly, toValue, computed, watch, MaybeRef, shallowRef } from 'vue';
+import { computed, MaybeRef, readonly, shallowRef, toValue, watch } from 'vue';
 import { useData } from 'vitepress';
-import { getLightColor, getDarkColor, isClient, hexToRgb } from 'vitepress-theme-teek';
+import { getDarkColor, getLightColor, hexToRgb, isClient } from 'vitepress-theme-teek';
+import { useCssVars } from './useCssVars';
 
 const pulseBrand3 = '--pulse-brand-3';
 const pulseBrand4 = '--pulse-brand-4';
@@ -28,34 +29,6 @@ const pulseBrandBr = '--pulse-brand-br';
 const pulseBrandGrBr1 = '--pulse-brand-gr-br-1';
 const pulseBrandGrBr2 = '--pulse-brand-gr-br-2';
 const pulseBrandGrBr3 = '--pulse-brand-gr-br-3';
-
-
-const varNameList = [
-  pulseBrand3,
-  pulseBrand4,
-  pulseBrand5,
-  pulseBrand6,
-  pulseBrand7,
-  pulseBrand8,
-  pulseBrand9,
-  pulseBrandTr1,
-  pulseBrandTr2,
-  pulseBrandTr3,
-  pulseBrandTr4,
-  pulseBrandTr5,
-  pulseBrandTr6,
-  pulseBrandTr7,
-  pulseBrandTr8,
-  pulseBrandTr9,
-  pulseBrandGr,
-  pulseBrandGr1,
-  pulseBrandGr2,
-  pulseBrandGr3,
-  pulseBrandBr,
-  pulseBrandGrBr1,
-  pulseBrandGrBr2,
-  pulseBrandGrBr3,
-];
 
 /**
  * hex 转 rgba
@@ -159,35 +132,37 @@ const lightenColor = (hex: string, amount: number = 20) => {
 }
 
 export const useExtraThemeColor = (color: MaybeRef<string>) => {
+  const styleId = 'extra-theme-color';
   const { isDark } = useData();
+  const { setCSSVariables, removeCSSVariableStyle } = useCssVars();
 
   // 主题色
   const themeColor = computed(() => toValue(color));
   const isStop = shallowRef(true);
   let stopWatch: ReturnType<typeof watch> | null = null;
 
-  const setStyleVar = (key: string, value: string) => {
-    if (!isClient) return;
-    document.documentElement.style.setProperty(key, value);
-  };
-
-  const removeStyleVar = (key: string) => {
-    if (!isClient) return;
-    document.documentElement.style.removeProperty(key);
-  };
-
   const clear = () => {
-    Object.values(varNameList).forEach(key => {
-      removeStyleVar(key);
-    });
+    removeCSSVariableStyle(styleId);
   }
 
-  const switchTransparent = () => {
-    if (!isClient) return;
-    const color = themeColor.value;
-    if (!color) return;
+  // 生成额外主题色
+  const generateExtraVars = (color: string) => {
+    const getColor: Function = isDark.value ? getDarkColor : getLightColor;
 
-    const transparentColorMap = {
+    return {
+      [pulseBrand3]: getColor(color, 0.3),
+      [pulseBrand4]: getColor(color, 0.4),
+      [pulseBrand5]: getColor(color, 0.5),
+      [pulseBrand6]: getColor(color, 0.6),
+      [pulseBrand7]: getColor(color, 0.7),
+      [pulseBrand8]: getColor(color, 0.8),
+      [pulseBrand9]: getColor(color, 0.9),
+    };
+  }
+
+  // 生成透明色
+  const generateTransparentVars = (color: string) => {
+    return {
       [pulseBrandTr1]: getTransparentColor(color, 0.1),
       [pulseBrandTr2]: getTransparentColor(color, 0.2),
       [pulseBrandTr3]: getTransparentColor(color, 0.3),
@@ -197,63 +172,15 @@ export const useExtraThemeColor = (color: MaybeRef<string>) => {
       [pulseBrandTr7]: getTransparentColor(color, 0.7),
       [pulseBrandTr8]: getTransparentColor(color, 0.8),
       [pulseBrandTr9]: getTransparentColor(color, 0.9),
-    }
-
-    Object.keys(transparentColorMap).forEach(key => {
-      setStyleVar(key, transparentColorMap[key]);
-    });
-  };
-
-  const switchLight = () => {
-    if (!isClient) return;
-    const color = themeColor.value;
-    if (!color) return;
-
-    const lightColorMap = {
-      [pulseBrand3]: getLightColor(color, 0.3),
-      [pulseBrand4]: getLightColor(color, 0.4),
-      [pulseBrand5]: getLightColor(color, 0.5),
-      [pulseBrand6]: getLightColor(color, 0.6),
-      [pulseBrand7]: getLightColor(color, 0.7),
-      [pulseBrand8]: getLightColor(color, 0.8),
-      [pulseBrand9]: getLightColor(color, 0.9),
     };
-
-    Object.keys(lightColorMap).forEach(key => {
-      setStyleVar(key, lightColorMap[key]);
-    });
-  }
-
-  const switchDark = () => {
-    if (!isClient) return;
-    const color = themeColor.value;
-    if (!color) return;
-
-    const darkColorMap = {
-      [pulseBrand3]: getDarkColor(color, 0.3),
-      [pulseBrand4]: getDarkColor(color, 0.4),
-      [pulseBrand5]: getDarkColor(color, 0.5),
-      [pulseBrand6]: getDarkColor(color, 0.6),
-      [pulseBrand7]: getDarkColor(color, 0.7),
-      [pulseBrand8]: getDarkColor(color, 0.8),
-      [pulseBrand9]: getDarkColor(color, 0.9),
-    }
-
-    Object.keys(darkColorMap).forEach(key => {
-      setStyleVar(key, darkColorMap[key]);
-    });
   }
 
   // 生成渐变色
-  const generateGradient = () => {
-    if (!isClient) return;
-    const color = themeColor.value;
-    if (!color) return;
-
+  const generateGradientVars = (color: string) => {
     const list = gradientColor(color, 80, 4);
     const brightList = list.map(color => lightenColor(color, isDark.value ? -10 : 15));
 
-    const gradientColorMap = {
+    return {
       [pulseBrandGr]: list[0],
       [pulseBrandGr1]: list[1],
       [pulseBrandGr2]: list[2],
@@ -262,21 +189,28 @@ export const useExtraThemeColor = (color: MaybeRef<string>) => {
       [pulseBrandGrBr1]: brightList[1],
       [pulseBrandGrBr2]: brightList[2],
       [pulseBrandGrBr3]: brightList[3],
-    }
-
-    Object.keys(gradientColorMap).forEach(key => {
-      setStyleVar(key, gradientColorMap[key]);
-    });
+    };
   }
 
   const update = () => {
-    switchTransparent();
-    generateGradient();
-    if (isDark.value) {
-      switchDark();
-    } else {
-      switchLight();
+    if (!isClient) return;
+
+    const color = themeColor.value;
+    if (!color) {
+      clear();
+      return;
     }
+
+    const extraCssVars = generateExtraVars(color);
+    const trCssVars = generateTransparentVars(color);
+    const grCssVars = generateGradientVars(color);
+
+    const cssVars = {
+      ...extraCssVars,
+      ...trCssVars,
+      ...grCssVars,
+    };
+    setCSSVariables(styleId, cssVars);
   }
 
   const start = () => {
@@ -294,8 +228,6 @@ export const useExtraThemeColor = (color: MaybeRef<string>) => {
     isStop.value = true;
     clear();
   };
-
-  // watch([themeColor, isDark], update, { immediate: true });
 
   return {
     isStop: readonly(isStop),

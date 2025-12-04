@@ -37,7 +37,6 @@ export interface CursorConfig {
 }
 
 import defaultIcon from '../cursors/other/default.svg';
-import customIcon from '../cursors/other/custom.svg';
 import macIcon from '../cursors/mac/default.png';
 import paperIcon from '../cursors/paperFold/default.png';
 import kroniiIcon from '../cursors/kronii/default.png';
@@ -62,28 +61,30 @@ export const cursorList: CursorConfig[] = [
   { label: '墨水', value: CursorTheme.Ink, icon: inkIcon },
   { label: '蓝色荧光', value: CursorTheme.BlueFl, icon: blueFlIcon },
   { label: '菱形简约', value: CursorTheme.Retro, icon: retroIcon },
-  { label: '自定义', value: CursorTheme.Custom, icon: customIcon },
 ];
 
 export interface Cursor {
-  url: string;
-  x?: number; // hotspot-x
-  y?: number; // hotspot-y
+  url: string; // 鼠标图片，支持多种格式，建议32*32的png图片（浏览器限制，动图只显示第一帧）
+  x?: number; // hotspot-x 视觉中心点距离左上角的x轴像素
+  y?: number; // hotspot-y 视觉中心点距离左上角的y轴像素
+}
+// 额外鼠标主题，一般只需要配置常用的default、pointer、text三种鼠标即可
+export interface CursorAppendTheme {
+  key: Exclude<string, CursorThemeValue>; // 主题唯一标识, 与内置主题一致时不显示
+  label: string; // 主题名称，建议不超过5个字
+  default: Cursor; // 默认鼠标配置
+  pointer?: Cursor; // 可点击、链接鼠标配置
+  text?: Cursor; // 文本鼠标配置
+  grab?: Cursor; // 抓取鼠标配置
+  help?: Cursor; // 帮助鼠标配置
+  move?: Cursor; // 移动时鼠标配置
+  noAllowed?: Cursor; // 不允许鼠标配置
+  cross?: Cursor; // 精确绘制鼠标配置，一般用不到
 }
 export interface PulseCursor {
   enabled: boolean;
   theme: CursorThemeValue;
-  custom?: { // 鼠标自定义
-    default?: Cursor;
-    pointer?: Cursor;
-    text?: Cursor;
-    grab?: Cursor;
-    grabbing?: Cursor;
-    help?: Cursor;
-    move?: Cursor;
-    noAllowed?: Cursor;
-    cross?: Cursor;
-  };
+  append?: CursorAppendTheme[]; // 鼠标主题追加
 }
 
 export interface PulseConfig {

@@ -8,6 +8,7 @@ import type {
   SiteAnalytics,
   SiteAnalyticsProvider,
 } from 'vitepress-theme-teek';
+import type { CursorAppendTheme } from './theme/config/pulseConfig';
 
 type VpConfig = DefaultTheme.Config;
 type SiteAnalyticsType = keyof SiteAnalyticsProvider;
@@ -316,4 +317,15 @@ export const siteAnalytics: SiteAnalytics<SiteAnalyticsType>[] = [
   /*{ provider: 'google', options: { id: '******' } },
   { provider: 'baidu', options: { id: '******' } },
   { provider: 'umami', options: { id: '******', src: '**' } },*/
+];
+
+// 鼠标追加主题
+export const cursorThemeAppend: CursorAppendTheme[] = [
+  {
+    key: 'mac',
+    label: 'Mac OS2',
+    default: { url: '/cursors/mac/default.png', x: 12, y: 8 },
+    text: { url: '/cursors/mac/text.png', x: 16, y: 17 },
+    pointer: { url: '/cursors/mac/hand.png', x: 13, y: 9 },
+  }
 ];

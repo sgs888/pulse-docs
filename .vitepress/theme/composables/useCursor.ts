@@ -1,41 +1,45 @@
-import { ComputedRef, Ref, watch } from 'vue';
-import { CursorTheme, PulseCursor, CursorThemeValue } from '../config/pulseConfig';
+import { ComputedRef, Ref, ref, watch } from 'vue';
+import { CursorTheme, CursorThemeValue, CursorAppendTheme } from '../config/pulseConfig';
 import { isClient } from 'vitepress-theme-teek';
+import { useCssVars } from './useCssVars';
+
+export interface CursorParams {
+  enabled: boolean;
+  theme: CursorThemeValue | string;
+}
 
 const cursorNames: string[] = [
   'default',
   'pointer',
   'text',
   'grab',
-  'grabbing',
   'help',
   'move',
   'not-allowed',
   'cross',
 ];
 
-const varNameList = cursorNames.map(cur => `--pulse-cursor-${cur}`);
-
-const generateCursorMapByType = (theme: CursorThemeValue): Record<string, string> => {
+const generateCursorVars = (theme: CursorAppendTheme) => {
   return cursorNames.reduce((res, curName) => {
     const key = `--pulse-cursor-${curName}`;
-    res[key] = `url("cursor/${theme}/${curName}.cur")`;
+    const cursor = theme[curName];
+    if (cursor && cursor.url) {
+      const x = cursor.x || 0;
+      const y = cursor.y || 0;
+      res[key] = `url("${cursor.url}") ${x} ${y}`;
+    }
     return res;
   }, {});
 }
 
-export const useCursor = (config?: ComputedRef<PulseCursor> | Ref<PulseCursor>) => {
-  const setStyleVar = (key: string, value: string) => {
-    if (!isClient) return;
-    document.documentElement.style.setProperty(key, value);
-  }
+export const useCursor = (
+  config: ComputedRef<CursorParams> | Ref<CursorParams>,
+  append?: CursorAppendTheme[],
+) => {
+  const styleId = 'cursor-theme';
+  const { setCSSVariables, removeCSSVariableStyle } = useCssVars();
 
-  const removeStyleVar = (key: string) => {
-    if (!isClient) return;
-    document.documentElement.style.removeProperty(key);
-  }
-
-  const setCursorTheme = (theme: CursorThemeValue) => {
+  const setCursorTheme = (theme: string) => {
     if (!isClient) return;
     document.documentElement.dataset.cursorTheme = theme;
   }
@@ -45,23 +49,26 @@ export const useCursor = (config?: ComputedRef<PulseCursor> | Ref<PulseCursor>) 
     document.documentElement.removeAttribute('data-cursor-theme');
   }
 
-  const setCursorType = (theme: CursorThemeValue) => {
-    if (theme === CursorTheme.Custom) {
-
-    } else {
-      setCursorTheme(theme);
-    }
+  const clear = () => {
+    removeCursorTheme();
+    removeCSSVariableStyle(styleId, 'clear');
   }
 
-  const update = (val: PulseCursor) => {
+  const update = (val: CursorParams) => {
     if (!isClient) return;
 
     const invalid = !val.enabled || !val.theme;
+    const appendTheme = append.find(item => item.key === val.theme);
 
     if (invalid || val.theme === CursorTheme.Default) {
+      clear();
+    } else if (appendTheme) {
       removeCursorTheme();
+      const cssVars = generateCursorVars(appendTheme);
+      setCSSVariables(styleId, cssVars);
     } else {
-      setCursorType(val.theme);
+      removeCSSVariableStyle(styleId, 'clear');
+      setCursorTheme(val.theme);
     }
   }
 

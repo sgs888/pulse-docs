@@ -3,7 +3,7 @@ import type { TeekConfig } from 'vitepress-theme-teek';
 import { type PulseTheme, type Md5LoginInfo, PulseLoginType } from './theme/config/pulseConfig';
 import dotenv from 'dotenv';
 import { teekConfig } from './theme/config/teekConfig';
-import { siteConfig, headerConfig, privateConfig } from './siteConfig';
+import { siteConfig, headerConfig, privateConfig, cursorThemeAppend } from './siteConfig';
 
 type VpConfig = DefaultTheme.Config;
 
@@ -111,6 +111,7 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
       cursor: {
         enabled: true,
         theme: 'default',
+        append: cursorThemeAppend,
       }
     }
   },
