@@ -323,9 +323,14 @@ export const siteAnalytics: SiteAnalytics<SiteAnalyticsType>[] = [
 export const cursorThemeAppend: CursorAppendTheme[] = [
   {
     key: 'mac',
-    label: 'Mac OS2',
+    label: 'Mac OS',
     default: { url: '/cursors/mac/default.png', x: 12, y: 8 },
     text: { url: '/cursors/mac/text.png', x: 16, y: 17 },
     pointer: { url: '/cursors/mac/hand.png', x: 13, y: 9 },
+    grab: { url: '/cursors/mac/grab.png', x: 16, y: 16 },
+    help: { url: '/cursors/mac/help.png', x: 16, y: 16 },
+    move: { url: '/cursors/mac/move.png', x: 16, y: 16 },
+    noAllowed: { url: '/cursors/mac/notAllowed.png', x: 16, y: 16 },
+    cross: { url: '/cursors/mac/cross.png', x: 16, y: 16 },
   }
 ];
