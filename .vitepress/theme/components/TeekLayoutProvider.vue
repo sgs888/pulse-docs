@@ -32,7 +32,7 @@
   </TeekLayout>
 </template>
 
-<script setup lang="ts" name="TeekLayoutProvider">
+<script setup lang="ts">
 import { watch, nextTick, ref, provide, computed, onMounted } from 'vue';
 import { TeekConfig, useTeekConfig } from 'vitepress-theme-teek';
 import { teekConfigContext, clockIcon } from 'vitepress-theme-teek';

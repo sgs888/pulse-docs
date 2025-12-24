@@ -47,7 +47,7 @@ export const blogFullThemeConfig: TeekConfig = {
 
 // 博客全图配置
 export const blogBodyThemeConfig: TeekConfig = {
-  pageStyle: 'segment',
+  pageStyle: 'segment-nav',
   bodyBgImg: {
     imgSrc: bannerConfig.images ?? [],
   },

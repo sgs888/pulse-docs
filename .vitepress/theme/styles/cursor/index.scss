@@ -39,6 +39,7 @@ button:enabled,
 }
 
 .cursor-pointer,
+.tk-right-bottom-button__button,
 [style*="cursor: pointer"],
 [style*="cursor: hand"] {
   cursor: $pointer, pointer;
