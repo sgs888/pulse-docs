@@ -76,18 +76,13 @@
 
         <ThemeSetting v-if="teekConfig.themeEnhance.enabled ?? true">
           <template v-for="(_, name) in $slots" :key="name" #[name]="scope">
-            <template v-if="name === 'teek-theme-enhance-bottom'">
-              <BannerTopSwitch v-if="bannerEnabled && !isFullImage" @change="changeBannerTop" />
-              <TransparentSwitch />
-              <slot name="teek-theme-enhance-bottom" v-bind="scope" />
-            </template>
-            <slot v-else :name="name" v-bind="scope" />
+            <slot :name="name" v-bind="scope" />
           </template>
         </ThemeSetting>
       </template>
 
       <template #nav-screen-content-after>
-        <BannerTopSwitch v-if="bannerEnabled && !isFullImage" @change="changeBannerTop" />
+        <BannerTopSwitch v-if="bannerEnabled && !isFullImage" />
         <TransparentSwitch />
         <slot name="nav-screen-content-after" />
       </template>
@@ -229,7 +224,7 @@
 import { computed, nextTick, provide, inject, ref, watch } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { useData, onContentUpdated } from 'vitepress';
-import type { TeekConfig, Language } from 'vitepress-theme-teek';
+import { TeekConfig, Language, useStorage } from 'vitepress-theme-teek';
 import {
   isBoolean,
   useNamespace,
@@ -319,7 +314,7 @@ const teekConfig = getTeekConfigRef<Required<TeekConfig>>(null, {
 
 const tkHomeRef = ref();
 const loading = ref(teekConfig.value.loading);
-const bannerTop = ref(false);
+const bannerTop = useStorage<boolean>('tk:bannerTop', false);
 const isFullscreen = ref(false);
 
 const isFullImage = computed(() => {
@@ -367,9 +362,6 @@ const bottomTipConfig = computed(() => {
 
 const themeSizeAttribute = ns.join('theme-size');
 
-const changeBannerTop = (isTop: boolean) => {
-  bannerTop.value = isTop;
-};
 const initBannerTop = () => {
   const banner = tkHomeRef.value?.$el.querySelector('.tk-banner');
   if (banner) {
@@ -393,7 +385,7 @@ watch(
 watch([bannerTop, currentStyle], () => nextTick(initBannerTop));
 watch(isFullImage, (val) => {
   if (val) {
-    changeBannerTop(true);
+    bannerTop.value = true;
   }
 });
 
