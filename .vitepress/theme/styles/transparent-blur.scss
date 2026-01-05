@@ -62,8 +62,18 @@ $popover-blur: var(--pulse-deep-blur, 8px);
   }
 
   // 全局搜索按钮
-  .DocSearch:hover {
-    background-color: $alt-bg-color;
+  .DocSearch {
+    .DocSearch-Button-Key {
+      border-color: $border-color;
+    }
+    &:hover {
+      background-color: $alt-bg-color;
+    }
+  }
+
+  // 全局搜索页面
+  .backdrop {
+    backdrop-filter: blur($blur);
   }
 
   // 博客全图doc页面显示背景
@@ -72,7 +82,7 @@ $popover-blur: var(--pulse-deep-blur, 8px);
   }
 
   // 折叠按钮
-  .tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger .tk-right-bottom-button__button {
+  .tk-sidebar-trigger .tk-right-bottom-button__button {
     background-color: $nav-bg-color;
     backdrop-filter: blur($blur);
     border: 1.2px solid $brand-bg-color;
@@ -136,6 +146,7 @@ $popover-blur: var(--pulse-deep-blur, 8px);
 
   // 博客全图侧边栏调整
   &:not([layout-mode="original"]) .tk-body-bg-image~.tk-layout.Layout .VPSidebar {
+    box-shadow: none;
     &:not(.open) {
       background: unset;
       .nav {
@@ -158,6 +169,7 @@ $popover-blur: var(--pulse-deep-blur, 8px);
     &:hover {
       background-color: $brand-bg-hover;
       border-color: $brand-bg-color;
+      color: #fff;
     }
   }
 
@@ -240,9 +252,10 @@ $popover-blur: var(--pulse-deep-blur, 8px);
           border-radius: 8px;
           overflow: visible;
           background-color: $soft-bg-color;
-          backdrop-filter: none;
+          backdrop-filter: blur($blur);
           .content {
             padding: 16px 32px 32px;
+            z-index: 0;
           }
           &.share-card-container {
             background-color: transparent;

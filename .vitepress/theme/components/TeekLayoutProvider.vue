@@ -1,5 +1,5 @@
 <template>
-  <TeekLayout>
+  <TeekLayout :h1-gradient="h1Gradient">
     <template #teek-theme-enhance-bottom>
       <div v-if="themeSwitch" :class="[ns, 'flx-align-center']">
         <ThemeSwitch v-model="currentStyle" @switch="handleConfigSwitch" />
@@ -67,6 +67,7 @@ const {
   showRibbon,
   theme,
   themeSwitch,
+  h1Gradient,
 } = globalConfig;
 const { getTeekConfigRef } = useTeekConfig();
 const { frontmatter } = useData();
@@ -77,12 +78,6 @@ const themeConfig = ref(docThemeConfig);
 provide(teekConfigContext, themeConfig);
 provide('currentStyle', currentStyle);
 const teekConfig = getTeekConfigRef<Required<TeekConfig>>(null);
-
-const bannerEnabled = computed(() => {
-  const banner = frontmatter.value.banner ?? teekConfig.value.banner;
-  const tkHomeEnabled = frontmatter.value.tk?.teekHome ?? teekConfig.value.teekHome;
-  return banner && banner.enabled && tkHomeEnabled;
-});
 
 const backTopEnabled = computed(() => {
   const backTop = frontmatter.value.backTop ?? teekConfig.value.backTop;

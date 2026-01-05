@@ -110,15 +110,20 @@ img:not(
   height: 16px;
 }
 
-.tk-card.Layout.has-sidebar-trigger .tk-sidebar-trigger,
-.tk-segment-nav.Layout.has-sidebar-trigger .tk-sidebar-trigger,
-.tk-card-nav.Layout.has-sidebar-trigger .tk-sidebar-trigger,
-.tk-segment.Layout.has-sidebar-trigger .tk-sidebar-trigger {
-  left: calc(50% - var(--tk-page-max-width)/2 + var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset));
-}
-
 .VPNavBarTitle .title {
   border-color: transparent !important;
+}
+
+// 一级标题渐变
+.allow-gradient {
+  $start: var(--pulse-brand-gr, #bd34fe);
+  $middle: var(--pulse-brand-gr-1, #d134cb);
+  $end: var(--pulse-brand-gr-2, #e43498);
+  .VPDoc h1 {
+    background: linear-gradient(15deg, $start 10%, $middle 30%, $end 50%);
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 // 移动端打开导航栏时禁止滚动
@@ -148,8 +153,26 @@ $border-color: var(--vp-c-divider);
   background-color: $border-color;
 }
 
-.tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
-  z-index: 99;
+// 折叠按钮
+html {
+  .tk-sidebar-trigger {
+    position: fixed;
+    top: calc(var(--vp-nav-height) + var(--tk-sidebar-trigger-top-offset));
+    width: 37px;
+    z-index: 99;
+    transition: left var(--tk-transition-duration-slow) ease-in-out;
+  }
+  &:has(.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse)) .tk-sidebar-trigger {
+    left: calc(50% - var(--tk-page-max-width)/2 + var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset));
+  }
+  &:has(.tk-layout.has-sidebar-trigger.is-sidebar-collapse) .tk-sidebar-trigger {
+    left: var(--tk-sidebar-trigger-left-offset) !important;
+  }
+  @media (max-width: 1280px) {
+    .tk-sidebar-trigger {
+      top: calc(var(--vp-nav-height) + var(--tk-sidebar-trigger-top-offset) + 47px);
+    }
+  }
 }
 
 @media (min-width: 1440px) {
@@ -167,10 +190,6 @@ $border-color: var(--vp-c-divider);
   .tk-body-bg-image~.tk-layout.Layout.tk-segment-nav .VPSidebar {
     background-color: $sidebar-bg-color;
   }
-  // 侧边栏搜索按钮位置调整
-  .tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
-    left: calc(var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset) + 32px) !important;
-  }
   // 右侧导航栏位置
   .aside-container {
     padding-top: calc(var(--vp-nav-height) + 8px) !important;
@@ -180,7 +199,7 @@ $border-color: var(--vp-c-divider);
   html[layout-mode=original] .tk-segment-nav .VPContent:not(.is-home) .VPDoc .container>.content {
     border-radius: 0;
   }
-  .tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
+  html:has(.tk-body-bg-image) .tk-sidebar-trigger {
     left: calc(var(--vp-sidebar-width) - 16px) !important;
   }
 }

@@ -48,6 +48,7 @@ interface GlobalConfig {
   tag?: boolean;
   docAnalysis?: boolean;
   backTop?: boolean;
+  h1Gradient?: boolean;
   appendThemeColor?: ThemeColor[];
 }
 
@@ -139,7 +140,7 @@ export const globalConfig: GlobalConfig = {
   // 是否开启主题切换
   themeSwitch: true,
   // 深色、浅色切换过渡动画
-  viewTransition: false,
+  viewTransition: true,
   // 全屏时是否设置为壁纸
   fullscreenWallpaper: false,
   // 是否开启文章分享按钮
@@ -158,6 +159,8 @@ export const globalConfig: GlobalConfig = {
   docAnalysis: true,
   // 是否开启返回到顶部按钮
   backTop: true,
+  // 文档一级标题是否开启渐变
+  h1Gradient: true,
   // 追加主题颜色, 不需要时设置为空即可
   appendThemeColor: [
     { label: '紫罗兰', value: 'violet', color: '#7166f0' },

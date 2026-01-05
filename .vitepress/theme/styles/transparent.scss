@@ -54,8 +54,18 @@ $init-blur: 2px;
   }
 
   // 全局搜索按钮
-  .DocSearch:hover {
-    background-color: $alt-bg-color;
+  .DocSearch {
+    .DocSearch-Button-Key {
+      border-color: $border-color;
+    }
+    &:hover {
+      background-color: $alt-bg-color;
+    }
+  }
+
+  // 全局搜索页面
+  .backdrop {
+    backdrop-filter: blur($init-blur);
   }
 
   // 博客全图doc页面显示背景
@@ -64,7 +74,7 @@ $init-blur: 2px;
   }
 
   // 折叠按钮调整
-  .tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger .tk-right-bottom-button__button {
+  .tk-sidebar-trigger .tk-right-bottom-button__button {
     background-color: $nav-bg-color;
     border: 1.2px solid $brand-bg-color;
     &:hover {
@@ -124,6 +134,7 @@ $init-blur: 2px;
 
   // 博客全图侧边栏调整
   &:not([layout-mode="original"]) .tk-body-bg-image~.tk-layout.Layout .VPSidebar {
+    box-shadow: none;
     &:not(.open) {
       background: unset;
       .nav {
@@ -143,6 +154,7 @@ $init-blur: 2px;
     &:hover {
       background-color: $brand-bg-hover;
       border-color: $brand-bg-color;
+      color: #fff;
     }
   }
 

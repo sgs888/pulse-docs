@@ -37,7 +37,10 @@
       v-show="!loading"
       :class="[
         ns.b(),
-        { [ns.m('hide-vp-home')]: !teekConfig.vpHome || (bannerEnabled && isFullscreen) },
+        {
+          [ns.m('hide-vp-home')]: !teekConfig.vpHome || (bannerEnabled && isFullscreen),
+          'allow-gradient': h1Gradient
+        },
         ns.has('sidebar-trigger', teekConfig.sidebarTrigger),
       ]"
     >
@@ -113,11 +116,13 @@
         <TkArticlePageStyle />
         <TkCodeBlockToggle v-if="teekConfig.codeBlock.enabled ?? true" />
         <TkVpContainer v-if="topTipConfig" v-bind="isBoolean(topTipConfig) ? {} : topTipConfig" />
-        <TkSidebarTrigger v-if="teekConfig.sidebarTrigger">
-          <template #default="scope">
-            <slot name="teek-sidebar-trigger" v-bind="scope" />
-          </template>
-        </TkSidebarTrigger>
+        <Teleport to="body">
+          <TkSidebarTrigger v-if="teekConfig.sidebarTrigger">
+            <template #default="scope">
+              <slot name="teek-sidebar-trigger" v-bind="scope" />
+            </template>
+          </TkSidebarTrigger>
+        </Teleport>
       </template>
 
       <template #doc-footer-before>
@@ -212,7 +217,7 @@
     </Layout>
   </template>
 
-  <ParticlesBack v-if="true" />
+  <ParticlesBack v-if="false" />
 
   <!-- 自定义滚动条 -->
   <div ref="scrollBarRef" class="fake-scrollbar">
@@ -232,6 +237,7 @@ import {
   useTeekConfig,
   usePageState,
   useRiskLink,
+  useViewTransition,
   localeContextKey,
   isClient,
   TkHomeBanner,
@@ -275,7 +281,10 @@ import ParticlesBack from './ParticlesBack.vue';
 
 defineOptions({ name: 'TeekLayout' });
 
-const props = defineProps<{ locale?: Language }>();
+const props = defineProps<{
+  locale?: Language,
+  h1Gradient?: boolean,
+}>();
 
 provide(
   localeContextKey,
@@ -290,6 +299,7 @@ const { getTeekConfig, getTeekConfigRef } = useTeekConfig();
 const { isHomePage, isArchivesPage, isCataloguePage, isArticleOverviewPage } = usePageState();
 const { frontmatter, localeIndex, page } = useData();
 const { scrollBarRef, thumbRef } = useFakeScrollbar();
+useViewTransition();
 
 // 支持 provide、frontmatter.tk、frontmatter、theme 配置
 const teekConfig = getTeekConfigRef<Required<TeekConfig>>(null, {
