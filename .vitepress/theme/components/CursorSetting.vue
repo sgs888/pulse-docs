@@ -21,7 +21,7 @@
               'is-active': cursorConfig.theme === cursor.value,
               'is-custom': cursor.isCustom,
             }]">
-              <img :src="cursor.icon" alt="" />
+              <img class="no-preview" :src="cursor.icon" alt="" />
             </div>
             <div class="label">{{ cursor.label }}</div>
           </div>
@@ -130,7 +130,7 @@ onUnmounted(() => {
   background: linear-gradient(45deg, var(--pulse-brand-gr) 0%, var(--pulse-brand-5) 100%);
   box-shadow: 0 4px 10px var(--pulse-brand-tr-5);
   transition: all 0.3s ease;
-  cursor: cursor.$pointer, pointer;
+  cursor: cursor.$pointer;
   z-index: 999;
   &:hover {
     background: linear-gradient(45deg, var(--pulse-brand-gr-br-1) 0%, var(--pulse-brand-gr-br-2) 100%);
@@ -167,7 +167,7 @@ onUnmounted(() => {
     border-radius: 4px;
     overflow: hidden;
     transition: all 0.1s ease;
-    cursor: cursor.$pointer, pointer;
+    cursor: cursor.$pointer;
     &.is-custom::before {
       content: '+';
       position: absolute;

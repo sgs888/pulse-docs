@@ -13,7 +13,8 @@ const appendColor = appendThemeColor.length > 0 ? [{
 const commonThemeConfig: TeekConfig = {
   themeEnhance: {
     themeColor: {
-      append: [...appendColor]
+      append: [...appendColor],
+      disabledInMobile: true,
     }
   }
 };

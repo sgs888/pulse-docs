@@ -84,12 +84,17 @@ export interface CursorAppendTheme {
 export interface PulseCursor {
   enabled: boolean;
   theme: CursorThemeValue;
-  append?: CursorAppendTheme[]; // 鼠标主题追加
+  append?: CursorAppendTheme[]; // 追加鼠标主题
+}
+
+export interface PulseParticles {
+  enabled: boolean;
 }
 
 export interface PulseConfig {
   private?: PulsePrivate;
   cursor?: PulseCursor;
+  particles?: PulseParticles;
 }
 
 export type PulseTheme = { pulse: PulseConfig };

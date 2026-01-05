@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, ref, watch } from 'vue';
+import { ComputedRef, Ref, watch } from 'vue';
 import { CursorTheme, CursorThemeValue, CursorAppendTheme } from '../config/pulseConfig';
 import { isClient } from 'vitepress-theme-teek';
 import { useCssVars } from './useCssVars';
@@ -26,7 +26,7 @@ const generateCursorVars = (theme: CursorAppendTheme) => {
     if (cursor && cursor.url) {
       const x = cursor.x || 0;
       const y = cursor.y || 0;
-      res[key] = `url("${cursor.url}") ${x} ${y}`;
+      res[key] = `url("${cursor.url}") ${x} ${y}, ${curName}`;
     }
     return res;
   }, {});

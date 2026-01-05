@@ -1,9 +1,4 @@
-:root {
-  --tk-body-bg-img-nav-color: hsla(0,0%,100%,.6) !important;
-}
-.dark {
-  --tk-body-bg-img-nav-color: rgba(27,27,31,.6) !important;
-}
+@use './cursor/index.scss' as cursor;
 
 html {
   position: relative;
@@ -20,7 +15,6 @@ html {
     right: 0;
     width: 8px;
     height: 100vh;
-    // background: #f1f1f1;
     background-color: transparent;
     border-radius: 4px;
     z-index: 99;
@@ -35,8 +29,15 @@ html {
     width: 100%;
     background-color: rgba(#000, 0.2);
     border-radius: 4px;
-    cursor: pointer;
+    cursor: cursor.$pointer;
   }
+}
+
+// 表格
+.vp-doc table {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--vp-c-bg-elv);
 }
 
 .tk-iframe {
@@ -51,6 +52,7 @@ html {
   }
   .tk-theme-enhance__content {
     max-height: calc(100vh - 100px);
+    overscroll-behavior: contain;
     overflow: auto;
     margin: -20px;
     padding: 20px;
@@ -61,10 +63,6 @@ html {
   background-size: cover !important;
   border-radius: 4px !important;
   overflow: hidden;
-}
-
-.tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
-  background-color: rgba(255, 255, 255, 1);
 }
 
 .vp-doc [class*='language-'] > button.copy.copied::before,
@@ -112,16 +110,6 @@ img:not(
   height: 16px;
 }
 
-$tr-bg-soft: var(--tr-bg-soft);
-$tr-bg-color: var(--tk-login-mask-bg-color);
-$tr-border-color: var(--tr-border-color);
-// $tr-bg-color: var(--tr-bg-color);
-
-.tk-layout.has-sidebar-trigger.is-sidebar-collapse .VPNav {
-  border: 0;
-  border-bottom: 1px solid $tr-border-color;
-}
-
 .tk-card.Layout.has-sidebar-trigger .tk-sidebar-trigger,
 .tk-segment-nav.Layout.has-sidebar-trigger .tk-sidebar-trigger,
 .tk-card-nav.Layout.has-sidebar-trigger .tk-sidebar-trigger,
@@ -129,161 +117,97 @@ $tr-border-color: var(--tr-border-color);
   left: calc(50% - var(--tk-page-max-width)/2 + var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset));
 }
 
-// 博客全图doc页面显示背景
-.tk-body-bg-image~.tk-layout.Layout .VPContent:not(.is-home) {
-  background-color: unset;
-}
-
 .VPNavBarTitle .title {
   border-color: transparent !important;
 }
 
-html:not([layout-mode="original"]) .tk-body-bg-image~.tk-layout.Layout .VPSidebar {
-  &:not(.open) {
-    background: unset;
-    .nav {
-      border-radius: 8px;
-      overflow: hidden;
-      background-color: $tr-bg-color;
-    }
-  }
-  &.open {
-    background-color: $tr-bg-color;
-    backdrop-filter: blur(2px);
+// 移动端打开导航栏时禁止滚动
+.VPNavBar.screen-open {
+  position: fixed;
+  width: 100%;
+}
+html:has(.VPNavBar.screen-open) {
+  overflow: hidden;
+  .fake-scrollbar {
+    visibility: hidden;
   }
 }
 
-html:has(.tk-body-bg-image) {
-  .DocSearch-Button:hover {
-    background-color: $tr-border-color;
-  }
-  .VPMenu, .tk-popover {
-    background-color: $tr-bg-color;
-  }
-  .tk-theme-enhance:before {
-    background-color: $tr-border-color;
-  }
-  .tk-sidebar-trigger {
-    z-index: 999;
-  }
-  .tk-right-bottom-button__button {
-    background: $tr-bg-color;
-    border: 1px solid var(--pulse-brand-tr-8);
-    box-shadow: 0 0 15px var(--tk-theme-color);
-    &:hover .tk-icon {
-      color: var(--tk-theme-color);
-    }
-  }
-  .VPLocalNavOutlineDropdown .items {
-    background-color: transparent;
-    border: 1px solid $tr-border-color;
-    &::after {
-      position: absolute;
-      content: '';
-      width: 100%;
-      height: 1.5px;
-      top: 48px;
-      left: 0;
-      background-color: $tr-border-color;
-    }
-    .header, .outline {
-      background-color: $tr-bg-color;
-      backdrop-filter: blur(2px);
-    }
-  }
+html[layout-mode=original] .tk-body-bg-image~.tk-layout.Layout.tk-segment-nav .VPContent:not(.is-home) {
+  background-color: var(--tk-bg-color);
 }
 
-@media (max-width: 960px) {
-  html:has(.tk-body-bg-image) {
-    .VPNavBar:not(.home) {
-      background-color: $tr-bg-soft;
-      .divider-line {
-        background-color: $tr-border-color;
-      }
-    }
-    .VPLocalNav {
-      background-color: $tr-bg-soft;
-      border-bottom: 1px solid $tr-border-color;
-    }
-    .VPDoc {
-      padding: 8px 32px 64px;
-      .container {
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: $tr-bg-color;
-        .content {
-          padding: 16px 32px 32px;
-        }
-      }
-    }
-  }
+/* 博客全图布局调整 */
+$nav-bg-color: var(--vp-nav-bg-color);
+$sidebar-bg-color: var(--vp-sidebar-bg-color);
+$divider-color: var(--vp-c-gutter);
+$border-color: var(--vp-c-divider);
+
+// 覆盖本页导航popover分割线颜色
+.VPLocalNavOutlineDropdown .items {
+  background-color: $border-color;
 }
-@media (min-width: 960px) {
-  html:has(.tk-body-bg-image) {
-    .VPNavBar:not(.home.top) .divider-line {
-      background-color: $tr-border-color;
-    }
-    .VPNavBar:not(.home),
-    .tk-layout.has-sidebar-trigger.is-sidebar-collapse .VPNav .VPNavBar.has-sidebar {
-      background-color: $tr-bg-soft;
-    }
-    .VPNavBar>.divider {
-      padding-left: 0 !important;
-    }
-    .curtain {
-      background-color: transparent;
-    }
-    .VPNavBar.has-sidebar .content {
-      padding-right: 0;
-      .content-body {
-        padding-right: 32px;
-        background-color: transparent;
-      }
-    }
-    .VPLocalNav {
-      background-color: $tr-bg-soft;
-      border-bottom: 1px solid $tr-border-color;
-    }
-    .VPSidebar .nav {
-      transform: translateY(54px);
-    }
-    .VPDoc {
-      padding: 8px 32px 64px;
-      .container {
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: $tr-bg-color;
-        .content {
-          padding: 16px 32px 32px;
-        }
-      }
-    }
+
+.tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
+  z-index: 99;
+}
+
+@media (min-width: 1440px) {
+  html[layout-mode=bothWidthAdjustable] .VPNavBar.has-sidebar>.divider {
+    padding: 0 !important;
   }
 }
 @media (min-width: 1280px) {
-  html:has(.tk-body-bg-image) {
-    .VPDoc .aside {
-      padding-left: 0;
-      .aside-curtain {
-        display: none;
-      }
-    }
+  // 滚动后顶部nav背景改为非透明
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home,
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar):not(.home) {
+    background-color: $nav-bg-color;
+  }
+  // 侧边栏默认颜色
+  .tk-body-bg-image~.tk-layout.Layout.tk-segment-nav .VPSidebar {
+    background-color: $sidebar-bg-color;
+  }
+  // 侧边栏搜索按钮位置调整
+  .tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
+    left: calc(var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset) + 32px) !important;
+  }
+  // 右侧导航栏位置
+  .aside-container {
+    padding-top: calc(var(--vp-nav-height) + 8px) !important;
   }
 }
 @media (max-width: 1280px) {
-  html:has(.tk-body-bg-image) {
-    .tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
-      left: calc(var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset) - 28px) !important;
-    }
+  html[layout-mode=original] .tk-segment-nav .VPContent:not(.is-home) .VPDoc .container>.content {
+    border-radius: 0;
+  }
+  .tk-body-bg-image~.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse) .tk-sidebar-trigger {
+    left: calc(var(--vp-sidebar-width) - 16px) !important;
   }
 }
-@media (min-width: 1440px) {
-  html:not([layout-mode="original"]):has(.tk-body-bg-image) {
-    .VPNavBar>.divider {
-      padding-left: 0 !important;
+@media (min-width: 960px) {
+  .VPNav:has(.VPNavBar:not(.home)) {
+    background-color: $nav-bg-color;
+  }
+  .VPNavBar:not(.home) {
+    background-color: unset;
+  }
+  // 侧边栏收缩时nav边框
+  .tk-layout.has-sidebar-trigger.is-sidebar-collapse .VPNav {
+    border: 0;
+    border-bottom: 1px solid $divider-color;
+  }
+  .VPNavBar.has-sidebar .content {
+    padding-right: 0 !important;
+    .content-body {
+      padding-right: 32px !important;
     }
-    .VPSidebar .nav {
-      transform: translateY(8px);
-    }
+  }
+  .VPNavBar>.divider {
+    padding-left: 0 !important;
+  }
+}
+@media (max-width: 768px) {
+  html[layout-mode=original] .tk-segment-nav .VPContent:not(.is-home) .VPDoc .container>.content {
+    padding: 20px;
   }
 }

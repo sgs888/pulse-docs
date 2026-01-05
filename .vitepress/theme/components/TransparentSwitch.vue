@@ -8,14 +8,23 @@
   >
     <TkSwitch v-model="isTransparent" />
     <div v-if="isTransparent" class="inner-box">
+      <span style="flex: 0 0 70px">透明度：</span>
+      <TkInputSlide
+        class="thin-slide"
+        v-model="opacity"
+        :min="0.5"
+        :max="1"
+        :step="0.05"
+      />
+    </div>
+    <div v-if="isTransparent" class="inner-box">
       毛玻璃效果：<TkSwitch v-model="isBlur" />
     </div>
-    <div v-if="isBlur" class="inner-box">
-      <span style="flex: 0 0 70px">模糊程度：</span>
+    <div v-if="isTransparent && isBlur" class="inner-box">
+      <span style="flex: 1 0 80px">模糊程度：</span>
       <TkInputSlide
         class="thin-slide"
         v-model="blurSize"
-        :disabled="isMobile"
         :min="1"
         :max="20"
       />
@@ -24,15 +33,23 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick, watch } from 'vue';
+import { useData } from 'vitepress';
 import {
-  TkThemeEnhanceBaseTemplate as BaseTemplate,
-  TkSwitch,
-  TkInputSlide,
+  varNameList,
   isClient,
+  TkInputSlide,
+  TkSwitch,
+  TkThemeEnhanceBaseTemplate as BaseTemplate,
+  themeColorStorageKey,
+  themeBgColorStorageKey,
   useCommon,
   useStorage,
+  hexToRgb,
+  getLightColor,
+  getDarkColor,
 } from 'vitepress-theme-teek';
-import { watch } from 'vue';
+import { useCssVars } from '../composables/useCssVars';
 
 const ns = 'transparent';
 const transparentIcon = `<svg class="icon" viewBox="0 0 1024 1024" width="48" height="48">
@@ -47,41 +64,156 @@ const transparentIcon = `<svg class="icon" viewBox="0 0 1024 1024" width="48" he
 </svg>`;
 const tipInfo = {
   title: '透明化',
-  desc: '部分元素背景透明化，支持设置毛玻璃效果以及模糊程度',
+  desc: '部分元素背景透明化，支持单独设置透明程度、毛玻璃效果以及模糊程度',
 };
 
-const emit = defineEmits<{
-  change: [config: boolean];
-}>();
+const styleId = 'transparent-blur';
+const bgColorStyleId = 'transparent-bg-color';
 
+const { isDark } = useData();
 const { isMobile } = useCommon();
+const { setCSSVariables, removeCSSVariableStyle } = useCssVars();
+
+const themeColorName = useStorage(themeColorStorageKey, '');
+const isSpread = useStorage(themeBgColorStorageKey, false);
 const isTransparent = useStorage('tk:transparent', false);
+const opacity = useStorage('tk:opacity', 0.7);
 const isBlur = useStorage('tk:blur', false);
 const blurSize = useStorage('tk:blur-size', 5);
 
-const setBodyClass = () => {
-  if (!isClient) return;
-  const body = document.body;
-  if (isTransparent.value) {
-    body.classList.add('tk-transparent');
-  } else {
-    body.classList.remove('tk-transparent');
+const hexToRgba = (hex: string, alpha: number) => {
+  const reg = /^\#?[0-9A-Fa-f]{6}$/;
+  if (!reg.test(hex)) {
+    console.error("[Pulse Error] 输入错误的 hex");
+    return hex;
   }
-  if (isTransparent.value && isBlur.value) {
-    body.classList.add('tk-blur');
-  } else {
-    body.classList.remove('tk-blur');
+  if (alpha < 0 || alpha > 1) {
+    console.error("[Pulse Error] alpha必须为0~1之间的数字");
+    return hex;
   }
-  if (isBlur.value && blurSize.value) {
-    body.style.setProperty('--tk-blur-size', `${blurSize.value}px`);
-  } else {
-    body.style.removeProperty('--tk-blur-size');
+
+  const [r, g, b] = hexToRgb(hex);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+const getBrandColor = async (alpha: number) => {
+  await nextTick();
+  const computedStyle = getComputedStyle(document.documentElement);
+  const brand1 = computedStyle.getPropertyValue(varNameList.vpBrand1);
+  const brand2 = computedStyle.getPropertyValue(varNameList.vpBrand2);
+  const brand3 = computedStyle.getPropertyValue(varNameList.vpBrand3);
+  return {
+    brand1,
+    brand2,
+    brand3,
+    brandTr1: hexToRgba(brand1, alpha),
+    brandTr2: hexToRgba(brand2, alpha),
+    brandTr3: hexToRgba(brand3, alpha),
   }
 }
 
-watch([isTransparent, isBlur, blurSize], () => {
-  setBodyClass();
-  emit('change', isTransparent.value);
+const getColorByTheme = (color: string, deep: number, alpha: number) => {
+  const getColor = isDark.value ? getDarkColor : getLightColor;
+  return hexToRgba(getColor(color, deep) || color, alpha);
+};
+
+const generateDarkSpreadColorVars = (color: string, alpha: number) => {
+  const softColor = getColorByTheme(color, 0.89, alpha);
+  const navColor = getColorByTheme(color, 0.88, alpha);
+  const elmColor = getColorByTheme(color, 0.87, alpha);
+
+  return {
+    '--pulse-soft-bg-color': softColor,
+    '--pulse-sidebar-bg-color': softColor,
+    '--pulse-nav-bg-color': navColor,
+    '--pulse-deep-bg-color': elmColor,
+    '--pulse-alt-bg-color': softColor,
+  }
+}
+
+const generateLightSpreadColorVars = (color: string, alpha: number) => {
+  const softColor = getColorByTheme(color, 0.88, alpha);
+  const navColor = getColorByTheme(color, 0.91, alpha);
+  const elmColor = getColorByTheme(color, 0.895, alpha);
+
+  return {
+    '--pulse-soft-bg-color': softColor,
+    '--pulse-sidebar-bg-color': softColor,
+    '--pulse-nav-bg-color': navColor,
+    '--pulse-deep-bg-color': elmColor,
+    '--pulse-alt-bg-color': softColor,
+  }
+}
+
+const generateSpreadColorVars = (color: string, alpha: number) => {
+  return isDark.value ? generateDarkSpreadColorVars(color, alpha) : generateLightSpreadColorVars(color, alpha);
+}
+
+const generateColorCssVars = async (alpha: number) => {
+  const { brand1, brandTr1, brandTr2, brandTr3 } = await getBrandColor(alpha);
+  const brandColorVars = {
+    '--pulse-brand1-color': brandTr1,
+    '--pulse-brand2-color': brandTr2,
+    '--pulse-brand3-color': brandTr3,
+  };
+
+  const deepAlpha = alpha >= 1 ? alpha : Number(Math.min(alpha + 0.05, 0.95).toFixed(2));
+  const alphaAdd = Number(Math.min(alpha + 0.1, 1).toFixed(2));
+  const spreadColorVars = isSpread.value ? generateSpreadColorVars(brand1, alpha) : {};
+  const colorVars = isDark.value ? {
+    '--pulse-nav-bg-color': `rgba(27, 27, 31, ${alpha})`,
+    '--pulse-sidebar-bg-color': `rgba(22, 22, 24, ${alpha})`,
+    '--pulse-elv-bg-color': `rgba(32, 33, 39, ${alpha})`,
+    '--pulse-soft-bg-color': `rgba(32, 33, 39, ${alpha})`,
+    '--pulse-deep-bg-color': `rgba(22, 22, 24, ${deepAlpha})`,
+    '--pulse-alt-bg-color': `rgba(50, 54, 63, ${alpha})`,
+    '--pulse-alt-bg-hover': `rgba(65, 72, 83, ${alphaAdd})`,
+    '--pulse-border-color': `rgba(46, 46, 50, ${alphaAdd})`,
+    '--pulse-divider-color': `rgba(0, 0, 0, ${alpha})`,
+  } : {
+    '--pulse-nav-bg-color': `rgba(255, 255, 255, ${alpha})`,
+    '--pulse-sidebar-bg-color': `rgba(246, 246, 247, ${alpha})`,
+    '--pulse-elv-bg-color': `rgba(255, 255, 255, ${alpha})`,
+    '--pulse-soft-bg-color': `rgba(246, 246, 247, ${alpha})`,
+    '--pulse-deep-bg-color': `rgba(246, 246, 247, ${deepAlpha})`,
+    '--pulse-alt-bg-color': `rgba(235, 235, 239, ${alpha})`,
+    '--pulse-alt-bg-hover': `rgba(228, 228, 233, ${alphaAdd})`,
+    '--pulse-border-color': `rgba(226, 226, 227, ${alphaAdd})`,
+    '--pulse-divider-color': `rgba(226, 226, 227, ${alpha})`,
+  };
+
+  return {
+    ...brandColorVars,
+    ...colorVars,
+    ...spreadColorVars,
+  }
+}
+
+watch([isTransparent, isBlur, opacity, blurSize, isDark, themeColorName, isSpread], async ([transparent, blur, op, bl]) => {
+  if (!isClient) return;
+
+  if (!transparent) {
+    document.documentElement.classList.remove('pulse-transparent');
+    document.documentElement.classList.remove('pulse-transparent-blur');
+    removeCSSVariableStyle(styleId);
+    removeCSSVariableStyle(bgColorStyleId);
+  } else {
+    const cssVars = {
+      '--pulse-opacity': op.toString(),
+      '--pulse-blur-size': `${bl}px`,
+      '--pulse-deep-blur': `${bl + 2}px`,
+    };
+    setCSSVariables(styleId, cssVars);
+    const colorCssVars = await generateColorCssVars(op);
+    setCSSVariables(bgColorStyleId, colorCssVars);
+    if (blur) {
+      document.documentElement.classList.remove('pulse-transparent');
+      document.documentElement.classList.add('pulse-transparent-blur');
+    } else {
+      document.documentElement.classList.remove('pulse-transparent-blur');
+      document.documentElement.classList.add('pulse-transparent');
+    }
+  }
 }, { immediate: true });
 </script>
 
@@ -89,9 +221,9 @@ watch([isTransparent, isBlur, blurSize], () => {
 .inner-box {
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 }
 :deep(.thin-slide) {
-  margin-top: 8px;
   .tk-input-slide__label, .tk-input-slide__label__input {
     height: 18px !important;
   }

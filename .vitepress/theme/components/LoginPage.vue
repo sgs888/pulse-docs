@@ -426,11 +426,13 @@ const handleBlur = (item: LoginFormItem, formName: 'username' | 'password' | 've
 </script>
 
 <style scoped lang="scss">
+@use '../styles/cursor/index.scss' as cursor;
+
 .login-form-item {
   gap: 8px;
 }
 .tk-login__right canvas {
   border-radius: 4px;
-  cursor: pointer;
+  cursor: cursor.$pointer;
 }
 </style>

@@ -131,7 +131,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
   position: fixed;
   bottom: 20px;
   right: 20px;
-  cursor: cursor.$pointer, pointer;
+  cursor: cursor.$pointer;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -144,18 +144,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 }
 
 @media (max-width: 768px) {
-  /* 低宽度下和下方按钮对齐 */
   .vitepress-backTop-main {
-    bottom: 85px;
-    right: 25px;
-  }
-}
-
-@media (max-width: 720px) {
-  /* 低宽度下和下方按钮对齐 */
-  .vitepress-backTop-main {
-    bottom: 70px;
     right: 16px;
+    bottom: 16px;
   }
 }
 

@@ -88,6 +88,10 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
     socialLinks: generateSocialLinks(),
     // 全局搜索
     search: localSearch ? search : undefined,
+    darkModeSwitchLabel: '主题',
+    lightModeSwitchTitle: '切换为浅色主题',
+    darkModeSwitchTitle: '切换为深色主题',
+    sidebarMenuLabel: '菜单',
     outline: {
       level: 'deep',
       label: '本页导航',

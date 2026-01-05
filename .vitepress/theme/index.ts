@@ -7,7 +7,7 @@ import 'vitepress-theme-teek/vp-plus/code-block-mobile.scss'; // 移动端代码
 import 'vitepress-theme-teek/vp-plus/sidebar.scss'; // 侧边栏优化
 import 'vitepress-theme-teek/vp-plus/nav.scss'; // 导航栏优化
 import 'vitepress-theme-teek/vp-plus/aside.scss'; // 右侧目栏录文字悬停和激活样式
-import 'vitepress-theme-teek/vp-plus/doc-h1-gradient.scss'; // 一级标题渐变色
+// import 'vitepress-theme-teek/vp-plus/doc-h1-gradient.scss'; // 一级标题渐变色
 import 'vitepress-theme-teek/vp-plus/table.scss'; // 表格样式调整，去掉单元格之间的线条
 import 'vitepress-theme-teek/vp-plus/mark.scss'; // <mark></mark> 样式
 import 'vitepress-theme-teek/vp-plus/blockquote.scss'; // > 引用块样式
@@ -25,7 +25,7 @@ import './styles/iframe.scss';
 import './styles/sidebar-icon.scss';
 import './styles/home-card.scss';
 import './styles/transparent.scss';
-import './styles/blur.scss';
+import './styles/transparent-blur.scss';
 import './styles/cursor/index.scss';
 
 export default {

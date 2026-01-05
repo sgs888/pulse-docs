@@ -77,13 +77,19 @@
         <ThemeSetting v-if="teekConfig.themeEnhance.enabled ?? true">
           <template v-for="(_, name) in $slots" :key="name" #[name]="scope">
             <template v-if="name === 'teek-theme-enhance-bottom'">
-              <BannerTopSwitch v-if="bannerEnabled" @change="changeBannerTop" />
+              <BannerTopSwitch v-if="bannerEnabled && !isFullImage" @change="changeBannerTop" />
               <TransparentSwitch />
               <slot name="teek-theme-enhance-bottom" v-bind="scope" />
             </template>
             <slot v-else :name="name" v-bind="scope" />
           </template>
         </ThemeSetting>
+      </template>
+
+      <template #nav-screen-content-after>
+        <BannerTopSwitch v-if="bannerEnabled && !isFullImage" @change="changeBannerTop" />
+        <TransparentSwitch />
+        <slot name="nav-screen-content-after" />
       </template>
 
       <template #layout-bottom>
@@ -211,6 +217,8 @@
     </Layout>
   </template>
 
+  <ParticlesBack v-if="true" />
+
   <!-- 自定义滚动条 -->
   <div ref="scrollBarRef" class="fake-scrollbar">
     <div ref="thumbRef" class="fake-thumb"></div>
@@ -268,6 +276,7 @@ import ThemeSetting from './ThemeSetting.vue';
 import BannerTopSwitch from './BannerTopSwitch.vue';
 import TransparentSwitch from './TransparentSwitch.vue';
 import LoginPage from './LoginPage.vue';
+import ParticlesBack from './ParticlesBack.vue';
 
 defineOptions({ name: 'TeekLayout' });
 
@@ -312,6 +321,10 @@ const tkHomeRef = ref();
 const loading = ref(teekConfig.value.loading);
 const bannerTop = ref(false);
 const isFullscreen = ref(false);
+
+const isFullImage = computed(() => {
+  return teekConfig.value.banner.bgStyle === 'fullImg';
+});
 
 const bannerEnabled = computed(() => {
   const banner = getTeekConfig('banner');
@@ -378,6 +391,11 @@ watch(
   { immediate: true, flush: 'post' }
 );
 watch([bannerTop, currentStyle], () => nextTick(initBannerTop));
+watch(isFullImage, (val) => {
+  if (val) {
+    changeBannerTop(true);
+  }
+});
 
 const { watchSite, watchPages } = useWatchLogin();
 const { restart } = useRiskLink({
@@ -412,7 +430,8 @@ const usedSlots = [
   'aside-bottom',
   'page-top',
   'aside-outline-before',
-  'sidebar-nav-before'
+  'sidebar-nav-before',
+  'nav-screen-content-after',
 ];
 </script>
 

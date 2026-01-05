@@ -33,7 +33,7 @@
   </TkPopover>
 </template>
 
-<script setup lang="ts" name="ThemeEnhance">
+<script setup lang="ts">
 import { useData } from 'vitepress';
 import {
   ns,

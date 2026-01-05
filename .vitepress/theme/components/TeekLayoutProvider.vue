@@ -22,6 +22,10 @@
       <BackTop v-if="backTopEnabled" />
     </template>
 
+    <template #teek-right-bottom-after>
+      <ThemeColorInMobile />
+    </template>
+
     <template #teek-home-post-list="{ currentPosts, transitionName }">
       <HomePostItem :current-posts="currentPosts" :transition-name="transitionName" />
     </template>
@@ -54,6 +58,7 @@ import BackTop from './BackTop.vue';
 import HomePostItem from './HomePostItem.vue';
 import NotFound from './404.vue';
 import CursorSetting from './CursorSetting.vue';
+import ThemeColorInMobile from './ThemeColorInMobile.vue';
 
 const ns = 'layout-provider';
 const createTime = siteConfig.createTime;
