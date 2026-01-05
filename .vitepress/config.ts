@@ -3,7 +3,7 @@ import type { TeekConfig } from 'vitepress-theme-teek';
 import { type PulseTheme, type Md5LoginInfo, PulseLoginType } from './theme/config/pulseConfig';
 import dotenv from 'dotenv';
 import { teekConfig } from './theme/config/teekConfig';
-import { siteConfig, headerConfig, privateConfig } from './siteConfig';
+import { siteConfig, headerConfig, privateConfig, cursorThemeAppend } from './siteConfig';
 
 type VpConfig = DefaultTheme.Config;
 
@@ -88,6 +88,10 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
     socialLinks: generateSocialLinks(),
     // 全局搜索
     search: localSearch ? search : undefined,
+    darkModeSwitchLabel: '主题',
+    lightModeSwitchTitle: '切换为浅色主题',
+    darkModeSwitchTitle: '切换为深色主题',
+    sidebarMenuLabel: '菜单',
     outline: {
       level: 'deep',
       label: '本页导航',
@@ -107,6 +111,11 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
         isTeek: isTeekPrivate,
         type: privateType as PulseLoginType,
         md5LoginInfos: md5LoginInfos,
+      },
+      cursor: {
+        enabled: true,
+        theme: 'default',
+        append: cursorThemeAppend,
       }
     }
   },

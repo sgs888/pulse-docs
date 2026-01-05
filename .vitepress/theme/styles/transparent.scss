@@ -1,50 +1,263 @@
-:root {
-  --tr-bg-soft: #f6f6f751;
-  --tr-bg-color: #ffffffA2;
-  --tr-bg-color-deep: #ffffff80;
-  --tr-border-color: #e2e2e380;
-  --tr-btn-bg-color: #ebebefa2;
-  --tr-btn-bg-color-hover: #ebebef80;
-}
-.dark {
-  --tr-bg-soft: #20212751;
-  --tr-bg-color: #202127A2;
-  --tr-bg-color-deep: #20212780;
-  --tr-border-color: #2e2e3280;
-  --tr-btn-bg-color: #32363fa2;
-  --tr-btn-bg-color-hover: #32363f80;
-}
+$nav-bg-color: var(--pulse-nav-bg-color);
+$sidebar-bg-color: var(--pulse-sidebar-bg-color);
+$elv-bg-color: var(--pulse-elv-bg-color);
+$soft-bg-color: var(--pulse-soft-bg-color);
+$deep-bg-color: var(--pulse-deep-bg-color);
+$brand-bg-color: var(--pulse-brand3-color);
+$brand-bg-hover: var(--pulse-brand2-color);
+$alt-bg-color: var(--pulse-alt-bg-color);
+$alt-bg-hover: var(--pulse-alt-bg-hover);
+$border-color: var(--pulse-border-color);
+$divider-color: var(--pulse-divider-color);
+$brand-color: var(--pulse-brand1-color);
 
-$color: var(--tk-bg-color-elm);
+$init-blur: 2px;
 
-.tk-transparent {
-  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
-    background-color: rgba(255, 255, 255, 0.6);
-  }
+.pulse-transparent {
   .VPMenu {
-    background-color: var(--tr-bg-color) !important;
+    transform: translateZ(0);
+    background-color: $elv-bg-color;
+    border-color: $border-color;
   }
   .VPButton.brand {
-    background-color: var(--pulse-brand-tr-4);
+    background-color: $brand-bg-color;
     &:hover {
-      background-color: var(--pulse-brand-tr-6);
+      background-color: $brand-bg-hover;
     }
   }
   .VPButton.alt {
-    background-color: var(--tr-btn-bg-color);
+    background-color: $alt-bg-color;
     &:hover {
-      background-color: var(--tr-btn-bg-color-hover);
+      background-color: $alt-bg-hover;
     }
   }
   .VPFeature {
-    background-color: var(--tr-bg-soft) !important;
-    border: 1px solid var(--tr-bg-soft) !important;
+    background-color: $soft-bg-color;
+    border: 1px solid $soft-bg-color;
   }
   .tk-post-item, .tk-page-card {
-    background-color: var(--tr-bg-color) !important;
+    background-color: $soft-bg-color;
   }
-  .tk-popover {
-    background-color: var(--tr-bg-color-deep) !important;
-    border: 1px solid var(--tr-border-color) !important;
+  .tk-popover, .theme-color-list {
+    background-color: $deep-bg-color;
+    border: 1px solid $border-color;
+  }
+  .tk-message {
+    opacity: 0.8;
+  }
+
+  // 分割线
+  .appearance::before,
+  .social-links::before,
+  .tk-theme-enhance::before {
+    background-color: $divider-color !important;
+  }
+
+  // 全局搜索按钮
+  .DocSearch {
+    .DocSearch-Button-Key {
+      border-color: $border-color;
+    }
+    &:hover {
+      background-color: $alt-bg-color;
+    }
+  }
+
+  // 全局搜索页面
+  .backdrop {
+    backdrop-filter: blur($init-blur);
+  }
+
+  // 博客全图doc页面显示背景
+  .tk-body-bg-image~.tk-layout.Layout .VPContent:not(.is-home) {
+    background-color: unset;
+  }
+
+  // 折叠按钮调整
+  .tk-sidebar-trigger .tk-right-bottom-button__button {
+    background-color: $nav-bg-color;
+    border: 1.2px solid $brand-bg-color;
+    &:hover {
+      background-color: $brand-bg-hover;
+    }
+  }
+
+  // 侧边栏折叠时导航背景色
+  .tk-layout.has-sidebar-trigger.is-sidebar-collapse .VPNav .VPNavBar.has-sidebar {
+    background-color: $nav-bg-color !important;
+  }
+
+  // original模式调整
+  .tk-body-bg-image~.tk-layout.Layout.tk-segment-nav .VPContent:not(.is-home) {
+    background-color: transparent !important;
+  }
+  &[layout-mode=original] {
+    .tk-segment-nav .VPContent:not(.is-home) .VPDoc {
+      padding: 8px 32px 64px;
+    }
+    .tk-segment-nav .VPContent:not(.is-home) .VPDoc .container>.content,
+    .tk-segment-nav.Layout .VPNav .VPNavBar:not(.home),
+    .tk-segment-nav .VPContent:not(.is-home) .VPDoc .aside .aside-container .aside-content .content {
+      background-color: transparent;
+    }
+    .tk-body-bg-image ~ .tk-layout.Layout.tk-segment-nav .VPSidebar {
+      background-color: $sidebar-bg-color;
+    }
+    .tk-segment-nav .tk-article-share__button {
+      background-color: $alt-bg-color;
+      &:hover {
+        background-color: $brand-bg-hover;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .tk-segment-nav .VPContent:not(.is-home) .VPDoc {
+        margin: 0 !important;
+      }
+    }
+    @media (min-width: 1280px) and (max-width: 1440px) {
+      .tk-body-bg-image ~ .tk-layout.Layout.tk-segment-nav .VPSidebar {
+        background: linear-gradient(to bottom, transparent 0, transparent 64px, $sidebar-bg-color 65px, $sidebar-bg-color 100%);
+      }
+    }
+    @media (min-width: 960px) and (max-width: 1280px) {
+      .tk-body-bg-image ~ .tk-layout.Layout.tk-segment-nav .VPSidebar {
+        background: linear-gradient(to bottom, transparent 0, transparent 111px, $sidebar-bg-color 112px, $sidebar-bg-color 100%);
+      }
+    }
+    @media (max-width: 960px) {
+      .tk-segment-nav.Layout .VPNav .VPNavBar:not(.home) {
+        background-color: $sidebar-bg-color;
+      }
+    }
+  }
+
+  // 博客全图侧边栏调整
+  &:not([layout-mode="original"]) .tk-body-bg-image~.tk-layout.Layout .VPSidebar {
+    box-shadow: none;
+    &:not(.open) {
+      background: unset;
+      .nav {
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: $sidebar-bg-color;
+      }
+    }
+    &.open {
+      background-color: $sidebar-bg-color;
+    }
+  }
+
+  // 分享按钮调整
+  .tk-article-share__button {
+    background-color: $alt-bg-color;
+    &:hover {
+      background-color: $brand-bg-hover;
+      border-color: $brand-bg-color;
+      color: #fff;
+    }
+  }
+
+  &:has(.tk-body-bg-image) {
+    .VPLocalNav {
+      background-color: $soft-bg-color;
+      border-bottom: 1px solid $border-color;
+    }
+    .VPNavBar.screen-open {
+      background-color: $nav-bg-color;
+    }
+    .VPNavScreen {
+      background-color: $soft-bg-color;
+    }
+    .VPLocalNavOutlineDropdown .items {
+      background-color: transparent;
+      border: 1px solid $border-color;
+      overflow: hidden;
+      .header, .outline {
+        background-color: $deep-bg-color;
+        .top-link {
+          display: none;
+        }
+      }
+    }
+    @media (min-width: 1280px) {
+      .tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home,
+      .tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar):not(.home) {
+        background-color: $nav-bg-color;
+      }
+      .aside-curtain {
+        display: none;
+      }
+      .VPSidebar .nav {
+        transform: translateY(8px) !important;
+      }
+      .VPDoc .aside {
+        padding-left: 0;
+        .aside-curtain {
+          display: none;
+        }
+      }
+    }
+
+    @media (min-width: 960px) {
+      .tk-layout.has-sidebar-trigger.is-sidebar-collapse .VPNav {
+        border-bottom: 1px solid $divider-color;
+      }
+      .VPNav:has(.VPNavBar:not(.home)) {
+        background-color: unset;
+      }
+      .VPNavBar:not(.home.top) .divider-line {
+        background-color: $divider-color;
+      }
+      .curtain {
+        background-color: $nav-bg-color;
+      }
+      .VPNavBar.has-sidebar .content .content-body {
+        background-color: $nav-bg-color;
+      }
+      &:has(.is-sidebar-collapse) .VPNavBar.has-sidebar .content .content-body {
+        background-color: transparent !important;
+      }
+      .VPSidebar .nav {
+        transform: translateY(54px);
+      }
+      .VPDoc {
+        padding: 8px 32px 64px;
+        .container {
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: $soft-bg-color;
+          .content {
+            padding: 16px 32px 32px;
+          }
+          &.share-card-container {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 960px) {
+      .VPNavBar:not(.home) {
+        background-color: $nav-bg-color;
+        .divider-line {
+          background-color: $divider-color;
+        }
+      }
+      .VPDoc {
+        padding: 8px 32px 64px;
+        .container {
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: $soft-bg-color;
+          .content {
+            padding: 16px 32px 32px;
+          }
+          &.share-card-container {
+            background-color: transparent;
+          }
+        }
+      }
+    }
   }
 }

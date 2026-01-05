@@ -1,0 +1,12 @@
+$basePath: '../../cursors/paperFold';
+
+html[data-cursor-theme="paperFold"] {
+  --pulse-cursor-default: url('#{$basePath}/default.png') 7 6, default;
+  --pulse-cursor-pointer: url('#{$basePath}/pointer.png') 12 9, pointer;
+  --pulse-cursor-text: url('#{$basePath}/text.png') 16 17, text;
+  --pulse-cursor-grab: url('#{$basePath}/resize_w-e.png') 16 16, grab;
+  --pulse-cursor-help: url('#{$basePath}/help.png') 16 16, help;
+  --pulse-cursor-move: url('#{$basePath}/move.png') 16 16, move;
+  --pulse-cursor-not-allowed: url('#{$basePath}/notAllowed.png') 16 16, not-allowed;
+  --pulse-cursor-cross: url('#{$basePath}/cross.png') 16 16, cross;
+}

@@ -19,6 +19,7 @@ const ns = 'error-page';
 </template>
 
 <style scoped lang="scss">
+@use '../styles/cursor/index.scss' as cursor;
 $namespace: error-page;
 
 .#{$namespace} {
@@ -63,7 +64,7 @@ $namespace: error-page;
       text-align: center;
       background-image: none;
       border: 1px solid transparent;
-      cursor: pointer;
+      cursor: cursor.$pointer;
       transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
       user-select: none;
       touch-action: manipulation;

@@ -1,0 +1,12 @@
+$basePath: '../../cursors/kronii';
+
+html[data-cursor-theme="kronii"] {
+  --pulse-cursor-default: url('#{$basePath}/default.png') 2 1, default;
+  --pulse-cursor-pointer: url('#{$basePath}/pointer.png') 2 1, pointer;
+  --pulse-cursor-text: url('#{$basePath}/text.png') 4 9, text;
+  --pulse-cursor-grab: url('#{$basePath}/horizontal.png') 16 16, grab;
+  --pulse-cursor-help: url('#{$basePath}/help.png') 16 16, help;
+  --pulse-cursor-move: url('#{$basePath}/move.png') 16 16, move;
+  --pulse-cursor-not-allowed: url('#{$basePath}/notAllowed.png') 16 16, not-allowed;
+  --pulse-cursor-cross: url('#{$basePath}/cross.png') 8 8, cross;
+}

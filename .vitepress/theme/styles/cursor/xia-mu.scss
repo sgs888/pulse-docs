@@ -1,0 +1,12 @@
+$basePath: '../../cursors/xiaMu';
+
+html[data-cursor-theme="xiaMu"] {
+  --pulse-cursor-default: url('#{$basePath}/default.png') 1 1, default;
+  --pulse-cursor-pointer: url('#{$basePath}/pointer.png') 1 1, pointer;
+  --pulse-cursor-text: url('#{$basePath}/text.png') 6 19, text;
+  --pulse-cursor-grab: url('#{$basePath}/grab.png') 1 1, grab;
+  --pulse-cursor-help: url('#{$basePath}/help2.png') 1 1, help;
+  --pulse-cursor-move: url('#{$basePath}/move.png') 16 16, move;
+  --pulse-cursor-not-allowed: url('#{$basePath}/notAllowed.png') 1 1, not-allowed;
+  --pulse-cursor-cross: url('#{$basePath}/cross.png') 16 16, cross;
+}

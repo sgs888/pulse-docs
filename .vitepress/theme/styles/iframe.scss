@@ -1,9 +1,4 @@
-:root {
-  --tk-body-bg-img-nav-color: hsla(0,0%,100%,.6) !important;
-}
-.dark {
-  --tk-body-bg-img-nav-color: rgba(27,27,31,.6) !important;
-}
+@use './cursor/index.scss' as cursor;
 
 html {
   position: relative;
@@ -20,7 +15,6 @@ html {
     right: 0;
     width: 8px;
     height: 100vh;
-    // background: #f1f1f1;
     background-color: transparent;
     border-radius: 4px;
     z-index: 99;
@@ -35,23 +29,15 @@ html {
     width: 100%;
     background-color: rgba(#000, 0.2);
     border-radius: 4px;
-    cursor: pointer;
+    cursor: cursor.$pointer;
   }
 }
 
-input[type="range"] {
-  /* WebKit: Chrome, Safari, Edge */
-  &::-webkit-slider-thumb, &::-webkit-slider-runnable-track {
-    cursor: grab !important;
-  }
-  /* Firefox */
-  &::-moz-range-thumb, &::-moz-range-track {
-    cursor: grab !important;
-  }
-  /* IE/Edge */
-  &::-ms-thumb, &::-ms-track {
-    cursor: grab !important;
-  }
+// 表格
+.vp-doc table {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--vp-c-bg-elv);
 }
 
 .tk-iframe {
@@ -66,6 +52,7 @@ input[type="range"] {
   }
   .tk-theme-enhance__content {
     max-height: calc(100vh - 100px);
+    overscroll-behavior: contain;
     overflow: auto;
     margin: -20px;
     padding: 20px;
@@ -76,10 +63,6 @@ input[type="range"] {
   background-size: cover !important;
   border-radius: 4px !important;
   overflow: hidden;
-}
-
-.tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home {
-  background-color: rgba(255, 255, 255, 1);
 }
 
 .vp-doc [class*='language-'] > button.copy.copied::before,
@@ -106,7 +89,12 @@ input[type="range"] {
   color: var(--vp-c-text-2) !important;
 }
 
-img:not(.tk-login img, .VPImage, .feature-img) {
+img:not(
+.tk-login img,
+.VPImage,
+.feature-img,
+.cursor-setting-container img
+) {
   border-radius: 4px;
   transition: all 0.3s ease;
   &:hover {
@@ -117,4 +105,128 @@ img:not(.tk-login img, .VPImage, .feature-img) {
 
 .tk-login~div {
   display: none !important;
+}
+.tk-theme-enhance__helper {
+  height: 16px;
+}
+
+.VPNavBarTitle .title {
+  border-color: transparent !important;
+}
+
+// 一级标题渐变
+.allow-gradient {
+  $start: var(--pulse-brand-gr, #bd34fe);
+  $middle: var(--pulse-brand-gr-1, #d134cb);
+  $end: var(--pulse-brand-gr-2, #e43498);
+  .VPDoc h1 {
+    background: linear-gradient(15deg, $start 10%, $middle 30%, $end 50%);
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+// 移动端打开导航栏时禁止滚动
+.VPNavBar.screen-open {
+  position: fixed;
+  width: 100%;
+}
+html:has(.VPNavBar.screen-open) {
+  overflow: hidden;
+  .fake-scrollbar {
+    visibility: hidden;
+  }
+}
+
+html[layout-mode=original] .tk-body-bg-image~.tk-layout.Layout.tk-segment-nav .VPContent:not(.is-home) {
+  background-color: var(--tk-bg-color);
+}
+
+/* 博客全图布局调整 */
+$nav-bg-color: var(--vp-nav-bg-color);
+$sidebar-bg-color: var(--vp-sidebar-bg-color);
+$divider-color: var(--vp-c-gutter);
+$border-color: var(--vp-c-divider);
+
+// 覆盖本页导航popover分割线颜色
+.VPLocalNavOutlineDropdown .items {
+  background-color: $border-color;
+}
+
+// 折叠按钮
+html {
+  .tk-sidebar-trigger {
+    position: fixed;
+    top: calc(var(--vp-nav-height) + var(--tk-sidebar-trigger-top-offset));
+    width: 37px;
+    z-index: 99;
+    transition: left var(--tk-transition-duration-slow) ease-in-out;
+  }
+  &:has(.tk-layout.has-sidebar-trigger:not(.is-sidebar-collapse)) .tk-sidebar-trigger {
+    left: calc(50% - var(--tk-page-max-width)/2 + var(--vp-sidebar-width) + var(--tk-sidebar-trigger-left-offset));
+  }
+  &:has(.tk-layout.has-sidebar-trigger.is-sidebar-collapse) .tk-sidebar-trigger {
+    left: var(--tk-sidebar-trigger-left-offset) !important;
+  }
+  @media (max-width: 1280px) {
+    .tk-sidebar-trigger {
+      top: calc(var(--vp-nav-height) + var(--tk-sidebar-trigger-top-offset) + 47px);
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  html[layout-mode=bothWidthAdjustable] .VPNavBar.has-sidebar>.divider {
+    padding: 0 !important;
+  }
+}
+@media (min-width: 1280px) {
+  // 滚动后顶部nav背景改为非透明
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar).home,
+  .tk-body-bg-image~.tk-layout.Layout header.VPNav .VPNavBar:not(.full-img-nav-bar):not(.home) {
+    background-color: $nav-bg-color;
+  }
+  // 侧边栏默认颜色
+  .tk-body-bg-image~.tk-layout.Layout.tk-segment-nav .VPSidebar {
+    background-color: $sidebar-bg-color;
+  }
+  // 右侧导航栏位置
+  .aside-container {
+    padding-top: calc(var(--vp-nav-height) + 8px) !important;
+  }
+}
+@media (max-width: 1280px) {
+  html[layout-mode=original] .tk-segment-nav .VPContent:not(.is-home) .VPDoc .container>.content {
+    border-radius: 0;
+  }
+  html:has(.tk-body-bg-image) .tk-sidebar-trigger {
+    left: calc(var(--vp-sidebar-width) - 16px) !important;
+  }
+}
+@media (min-width: 960px) {
+  .VPNav:has(.VPNavBar:not(.home)) {
+    background-color: $nav-bg-color;
+  }
+  .VPNavBar:not(.home) {
+    background-color: unset;
+  }
+  // 侧边栏收缩时nav边框
+  .tk-layout.has-sidebar-trigger.is-sidebar-collapse .VPNav {
+    border: 0;
+    border-bottom: 1px solid $divider-color;
+  }
+  .VPNavBar.has-sidebar .content {
+    padding-right: 0 !important;
+    .content-body {
+      padding-right: 32px !important;
+    }
+  }
+  .VPNavBar>.divider {
+    padding-left: 0 !important;
+  }
+}
+@media (max-width: 768px) {
+  html[layout-mode=original] .tk-segment-nav .VPContent:not(.is-home) .VPDoc .container>.content {
+    padding: 20px;
+  }
 }

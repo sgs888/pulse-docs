@@ -13,7 +13,8 @@ const appendColor = appendThemeColor.length > 0 ? [{
 const commonThemeConfig: TeekConfig = {
   themeEnhance: {
     themeColor: {
-      append: [...appendColor]
+      append: [...appendColor],
+      disabledInMobile: true,
     }
   }
 };
@@ -47,7 +48,7 @@ export const blogFullThemeConfig: TeekConfig = {
 
 // 博客全图配置
 export const blogBodyThemeConfig: TeekConfig = {
-  pageStyle: 'segment',
+  pageStyle: 'segment-nav',
   bodyBgImg: {
     imgSrc: bannerConfig.images ?? [],
   },

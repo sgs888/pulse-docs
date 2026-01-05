@@ -11,7 +11,8 @@
     "types": ["node"],
   },
   "include": [
-    ".vitepress"
+    ".vitepress",
+    ".vitepress/types.d.ts"
   ],
   "exclude": [
     "node_modules",

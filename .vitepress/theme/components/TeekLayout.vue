@@ -37,7 +37,10 @@
       v-show="!loading"
       :class="[
         ns.b(),
-        { [ns.m('hide-vp-home')]: !teekConfig.vpHome || (bannerEnabled && isFullscreen) },
+        {
+          [ns.m('hide-vp-home')]: !teekConfig.vpHome || (bannerEnabled && isFullscreen),
+          'allow-gradient': h1Gradient
+        },
         ns.has('sidebar-trigger', teekConfig.sidebarTrigger),
       ]"
     >
@@ -76,14 +79,15 @@
 
         <ThemeSetting v-if="teekConfig.themeEnhance.enabled ?? true">
           <template v-for="(_, name) in $slots" :key="name" #[name]="scope">
-            <template v-if="name === 'teek-theme-enhance-bottom'">
-              <BannerTopSwitch v-if="bannerEnabled" @change="changeBannerTop" />
-              <TransparentSwitch />
-              <slot name="teek-theme-enhance-bottom" v-bind="scope" />
-            </template>
-            <slot v-else :name="name" v-bind="scope" />
+            <slot :name="name" v-bind="scope" />
           </template>
         </ThemeSetting>
+      </template>
+
+      <template #nav-screen-content-after>
+        <BannerTopSwitch v-if="bannerEnabled && !isFullImage" />
+        <TransparentSwitch />
+        <slot name="nav-screen-content-after" />
       </template>
 
       <template #layout-bottom>
@@ -112,11 +116,13 @@
         <TkArticlePageStyle />
         <TkCodeBlockToggle v-if="teekConfig.codeBlock.enabled ?? true" />
         <TkVpContainer v-if="topTipConfig" v-bind="isBoolean(topTipConfig) ? {} : topTipConfig" />
-        <TkSidebarTrigger v-if="teekConfig.sidebarTrigger">
-          <template #default="scope">
-            <slot name="teek-sidebar-trigger" v-bind="scope" />
-          </template>
-        </TkSidebarTrigger>
+        <Teleport to="body">
+          <TkSidebarTrigger v-if="teekConfig.sidebarTrigger">
+            <template #default="scope">
+              <slot name="teek-sidebar-trigger" v-bind="scope" />
+            </template>
+          </TkSidebarTrigger>
+        </Teleport>
       </template>
 
       <template #doc-footer-before>
@@ -211,6 +217,8 @@
     </Layout>
   </template>
 
+  <ParticlesBack v-if="false" />
+
   <!-- 自定义滚动条 -->
   <div ref="scrollBarRef" class="fake-scrollbar">
     <div ref="thumbRef" class="fake-thumb"></div>
@@ -221,7 +229,7 @@
 import { computed, nextTick, provide, inject, ref, watch } from 'vue';
 import DefaultTheme from 'vitepress/theme';
 import { useData, onContentUpdated } from 'vitepress';
-import type { TeekConfig, Language } from 'vitepress-theme-teek';
+import { TeekConfig, Language, useStorage } from 'vitepress-theme-teek';
 import {
   isBoolean,
   useNamespace,
@@ -229,6 +237,7 @@ import {
   useTeekConfig,
   usePageState,
   useRiskLink,
+  useViewTransition,
   localeContextKey,
   isClient,
   TkHomeBanner,
@@ -268,10 +277,14 @@ import ThemeSetting from './ThemeSetting.vue';
 import BannerTopSwitch from './BannerTopSwitch.vue';
 import TransparentSwitch from './TransparentSwitch.vue';
 import LoginPage from './LoginPage.vue';
+import ParticlesBack from './ParticlesBack.vue';
 
 defineOptions({ name: 'TeekLayout' });
 
-const props = defineProps<{ locale?: Language }>();
+const props = defineProps<{
+  locale?: Language,
+  h1Gradient?: boolean,
+}>();
 
 provide(
   localeContextKey,
@@ -286,6 +299,7 @@ const { getTeekConfig, getTeekConfigRef } = useTeekConfig();
 const { isHomePage, isArchivesPage, isCataloguePage, isArticleOverviewPage } = usePageState();
 const { frontmatter, localeIndex, page } = useData();
 const { scrollBarRef, thumbRef } = useFakeScrollbar();
+useViewTransition();
 
 // 支持 provide、frontmatter.tk、frontmatter、theme 配置
 const teekConfig = getTeekConfigRef<Required<TeekConfig>>(null, {
@@ -310,8 +324,12 @@ const teekConfig = getTeekConfigRef<Required<TeekConfig>>(null, {
 
 const tkHomeRef = ref();
 const loading = ref(teekConfig.value.loading);
-const bannerTop = ref(false);
+const bannerTop = useStorage<boolean>('tk:bannerTop', false);
 const isFullscreen = ref(false);
+
+const isFullImage = computed(() => {
+  return teekConfig.value.banner.bgStyle === 'fullImg';
+});
 
 const bannerEnabled = computed(() => {
   const banner = getTeekConfig('banner');
@@ -354,9 +372,6 @@ const bottomTipConfig = computed(() => {
 
 const themeSizeAttribute = ns.join('theme-size');
 
-const changeBannerTop = (isTop: boolean) => {
-  bannerTop.value = isTop;
-};
 const initBannerTop = () => {
   const banner = tkHomeRef.value?.$el.querySelector('.tk-banner');
   if (banner) {
@@ -378,6 +393,11 @@ watch(
   { immediate: true, flush: 'post' }
 );
 watch([bannerTop, currentStyle], () => nextTick(initBannerTop));
+watch(isFullImage, (val) => {
+  if (val) {
+    bannerTop.value = true;
+  }
+});
 
 const { watchSite, watchPages } = useWatchLogin();
 const { restart } = useRiskLink({
@@ -412,7 +432,8 @@ const usedSlots = [
   'aside-bottom',
   'page-top',
   'aside-outline-before',
-  'sidebar-nav-before'
+  'sidebar-nav-before',
+  'nav-screen-content-after',
 ];
 </script>
 

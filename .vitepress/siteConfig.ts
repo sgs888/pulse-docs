@@ -8,6 +8,7 @@ import type {
   SiteAnalytics,
   SiteAnalyticsProvider,
 } from 'vitepress-theme-teek';
+import type { CursorAppendTheme } from './theme/config/pulseConfig';
 
 type VpConfig = DefaultTheme.Config;
 type SiteAnalyticsType = keyof SiteAnalyticsProvider;
@@ -47,6 +48,7 @@ interface GlobalConfig {
   tag?: boolean;
   docAnalysis?: boolean;
   backTop?: boolean;
+  h1Gradient?: boolean;
   appendThemeColor?: ThemeColor[];
 }
 
@@ -138,7 +140,7 @@ export const globalConfig: GlobalConfig = {
   // 是否开启主题切换
   themeSwitch: true,
   // 深色、浅色切换过渡动画
-  viewTransition: false,
+  viewTransition: true,
   // 全屏时是否设置为壁纸
   fullscreenWallpaper: false,
   // 是否开启文章分享按钮
@@ -146,7 +148,7 @@ export const globalConfig: GlobalConfig = {
   // 是否开启侧边栏收缩按钮
   sidebarTrigger: true,
   // 是否显示彩带背景，仅blog主页和doc生效
-  showRibbon: true,
+  showRibbon: false,
   // 是否显示置顶文章卡片
   topArticle: true,
   // 是否显示分类卡片
@@ -157,6 +159,8 @@ export const globalConfig: GlobalConfig = {
   docAnalysis: true,
   // 是否开启返回到顶部按钮
   backTop: true,
+  // 文档一级标题是否开启渐变
+  h1Gradient: true,
   // 追加主题颜色, 不需要时设置为空即可
   appendThemeColor: [
     { label: '紫罗兰', value: 'violet', color: '#7166f0' },
@@ -316,4 +320,20 @@ export const siteAnalytics: SiteAnalytics<SiteAnalyticsType>[] = [
   /*{ provider: 'google', options: { id: '******' } },
   { provider: 'baidu', options: { id: '******' } },
   { provider: 'umami', options: { id: '******', src: '**' } },*/
+];
+
+// 鼠标追加主题
+export const cursorThemeAppend: CursorAppendTheme[] = [
+  {
+    key: 'mac',
+    label: 'Mac OS',
+    default: { url: '/cursors/mac/default.png', x: 12, y: 8 },
+    text: { url: '/cursors/mac/text.png', x: 16, y: 17 },
+    pointer: { url: '/cursors/mac/hand.png', x: 13, y: 9 },
+    grab: { url: '/cursors/mac/grab.png', x: 16, y: 16 },
+    help: { url: '/cursors/mac/help.png', x: 16, y: 16 },
+    move: { url: '/cursors/mac/move.png', x: 16, y: 16 },
+    noAllowed: { url: '/cursors/mac/notAllowed.png', x: 16, y: 16 },
+    cross: { url: '/cursors/mac/cross.png', x: 16, y: 16 },
+  }
 ];

@@ -1,5 +1,5 @@
 <template>
-  <TeekLayout>
+  <TeekLayout :h1-gradient="h1Gradient">
     <template #teek-theme-enhance-bottom>
       <div v-if="themeSwitch" :class="[ns, 'flx-align-center']">
         <ThemeSwitch v-model="currentStyle" @switch="handleConfigSwitch" />
@@ -14,8 +14,20 @@
       <ContributeChart />
     </template>
 
+    <template #teek-right-bottom-before>
+      <CursorSetting />
+    </template>
+
     <template #teek-back-top>
       <BackTop v-if="backTopEnabled" />
+    </template>
+
+    <template #teek-right-bottom-after>
+      <ThemeColorInMobile />
+    </template>
+
+    <template #teek-home-post-list="{ currentPosts, transitionName }">
+      <HomePostItem :current-posts="currentPosts" :transition-name="transitionName" />
     </template>
 
     <template #not-found>
@@ -24,7 +36,7 @@
   </TeekLayout>
 </template>
 
-<script setup lang="ts" name="TeekLayoutProvider">
+<script setup lang="ts">
 import { watch, nextTick, ref, provide, computed, onMounted } from 'vue';
 import { TeekConfig, useTeekConfig } from 'vitepress-theme-teek';
 import { teekConfigContext, clockIcon } from 'vitepress-theme-teek';
@@ -43,7 +55,10 @@ import TeekLayout from './TeekLayout.vue';
 import ThemeSwitch from './ThemeSwitch.vue';
 import ContributeChart from './ContributeChart.vue';
 import BackTop from './BackTop.vue';
+import HomePostItem from './HomePostItem.vue';
 import NotFound from './404.vue';
+import CursorSetting from './CursorSetting.vue';
+import ThemeColorInMobile from './ThemeColorInMobile.vue';
 
 const ns = 'layout-provider';
 const createTime = siteConfig.createTime;
@@ -52,6 +67,7 @@ const {
   showRibbon,
   theme,
   themeSwitch,
+  h1Gradient,
 } = globalConfig;
 const { getTeekConfigRef } = useTeekConfig();
 const { frontmatter } = useData();
@@ -62,12 +78,6 @@ const themeConfig = ref(docThemeConfig);
 provide(teekConfigContext, themeConfig);
 provide('currentStyle', currentStyle);
 const teekConfig = getTeekConfigRef<Required<TeekConfig>>(null);
-
-const bannerEnabled = computed(() => {
-  const banner = frontmatter.value.banner ?? teekConfig.value.banner;
-  const tkHomeEnabled = frontmatter.value.tk?.teekHome ?? teekConfig.value.teekHome;
-  return banner && banner.enabled && tkHomeEnabled;
-});
 
 const backTopEnabled = computed(() => {
   const backTop = frontmatter.value.backTop ?? teekConfig.value.backTop;

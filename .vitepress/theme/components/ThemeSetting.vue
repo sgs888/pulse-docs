@@ -28,12 +28,15 @@
         <SpotlightStyle />
       </template>
 
+      <BannerTopSwitch v-if="bannerEnabled && !isFullImage" />
+      <TransparentSwitch />
+
       <slot name="teek-theme-enhance-bottom" />
     </div>
   </TkPopover>
 </template>
 
-<script setup lang="ts" name="ThemeEnhance">
+<script setup lang="ts">
 import { useData } from 'vitepress';
 import {
   ns,
@@ -55,8 +58,10 @@ import LayoutPageWidthSlide from 'vitepress-theme-teek/es/components/theme/Theme
 import LayoutDocWidthSlide from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/LayoutDocWidthSlide.vue';
 import ThemeColor from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/ThemeColor.vue';
 import Spotlight from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/Spotlight.vue';
-import SpotlightStyle from 'vitepress-theme-teek/es/components/theme/ThemeEnhance/src/SpotlightStyle.vue';
-import { useExtraThemeColor } from '../composables/useExtraThemeColor.js';
+import SpotlightStyle from './SpotlightStyle.vue';
+import BannerTopSwitch from './BannerTopSwitch.vue';
+import TransparentSwitch from './TransparentSwitch.vue';
+import { useExtraThemeColor } from '../composables/useExtraThemeColor';
 
 const settingIcon = `<svg viewBox="0 0 1024 1024" width="48" height="48">
   <path d="M512 341.33c-94.1 0-170.67 76.56-170.67 170.67S417.9 682.67 512 682.67 682.67 606.1 682.67 512 606.1 341.33 512 341.33z m0 256c-47.06 0-85.33-38.27-85.33-85.33s38.27-85.33 85.33-85.33 85.33 38.27 85.33 85.33-38.27 85.33-85.33 85.33z" fill="currentColor" />
@@ -66,8 +71,9 @@ const settingIcon = `<svg viewBox="0 0 1024 1024" width="48" height="48">
 defineOptions({ name: 'ThemeEnhance' });
 
 const { isDark } = useData();
-const { getTeekConfigRef } = useTeekConfig();
+const { getTeekConfigRef, getTeekConfig } = useTeekConfig();
 const themeEnhanceConfig = getTeekConfigRef<ThemeEnhance>('themeEnhance', { position: 'top' });
+const banner = getTeekConfigRef('banner', { enabled: false });
 
 const isMobile = useMediaQuery(mobileMaxWidthMedia);
 const themeColorName = useStorage(themeColorStorageKey,
@@ -81,6 +87,15 @@ const disabledList = computed(() => {
     themeColor: themeEnhanceConfig.value.themeColor?.disabled ?? false,
     spotlight: themeEnhanceConfig.value.spotlight?.disabled ?? false
   };
+});
+
+const isFullImage = computed(() => {
+  return banner.value.bgStyle === 'fullImg';
+});
+
+const bannerEnabled = computed(() => {
+  const tkHomeEnabled = getTeekConfig('teekHome');
+  return banner.value && banner.value?.enabled && tkHomeEnabled;
 });
 
 const { start: startExtraTheme, stop: stopExtraTheme } = useExtraThemeColor(themeColor);
@@ -101,7 +116,6 @@ watch([themeColorName, isDark], async () => {
     startExtraTheme();
   }
 }, { immediate: true });
-
 
 </script>
 <style lang="scss" scoped>
