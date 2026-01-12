@@ -1,4 +1,4 @@
-$basePath: '../../cursors/kronii';
+$basePath: '@/theme/cursors/kronii';
 
 html[data-cursor-theme="kronii"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 2 1, default;

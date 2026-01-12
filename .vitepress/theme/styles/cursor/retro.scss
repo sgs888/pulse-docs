@@ -1,4 +1,4 @@
-$basePath: '../../cursors/retro';
+$basePath: '@/theme/cursors/retro';
 
 html[data-cursor-theme="retro"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 10 7, default;

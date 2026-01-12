@@ -1,4 +1,4 @@
-$basePath: '../../cursors/paperPlane';
+$basePath: '@/theme/cursors/paperPlane';
 
 html[data-cursor-theme="paperPlane"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 6 7, default;

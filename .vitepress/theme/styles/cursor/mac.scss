@@ -1,4 +1,4 @@
-$basePath: '../../cursors/mac';
+$basePath: '@/theme/cursors/mac';
 
 html[data-cursor-theme="mac"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 12 8, default;

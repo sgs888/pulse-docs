@@ -36,18 +36,18 @@ export interface CursorConfig {
   icon?: string;
 }
 
-import defaultIcon from '../cursors/other/default.svg';
-import macIcon from '../cursors/mac/default.png';
-import paperIcon from '../cursors/paperFold/default.png';
-import kroniiIcon from '../cursors/kronii/default.png';
-import blackWukongIcon from '../cursors/blackWukong/default.png';
-import paperPlaneIcon from '../cursors/paperPlane/default.png';
-import waterDropIcon from '../cursors/waterDrop/default.png';
-import xiaMuIcon from '../cursors/xiaMu/default.png';
-import retroIcon from '../cursors/retro/default.png';
-import birdsIcon from '../cursors/angryBirds/default.png';
-import blueFlIcon from '../cursors/blueFl/default.png';
-import inkIcon from '../cursors/ink/default.png';
+import defaultIcon from '@/theme/cursors/other/default.svg';
+import macIcon from '@/theme/cursors/mac/default.png';
+import paperIcon from '@/theme/cursors/paperFold/default.png';
+import kroniiIcon from '@/theme/cursors/kronii/default.png';
+import blackWukongIcon from '@/theme/cursors/blackWukong/default.png';
+import paperPlaneIcon from '@/theme/cursors/paperPlane/default.png';
+import waterDropIcon from '@/theme/cursors/waterDrop/default.png';
+import xiaMuIcon from '@/theme/cursors/xiaMu/default.png';
+import retroIcon from '@/theme/cursors/retro/default.png';
+import birdsIcon from '@/theme/cursors/angryBirds/default.png';
+import blueFlIcon from '@/theme/cursors/blueFl/default.png';
+import inkIcon from '@/theme/cursors/ink/default.png';
 export const cursorList: CursorConfig[] = [
   { label: '默认', value: CursorTheme.Default, icon: defaultIcon },
   { label: '折纸', value: CursorTheme.PaperFold, icon: paperIcon },

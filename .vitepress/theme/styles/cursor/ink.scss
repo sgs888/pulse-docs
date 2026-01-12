@@ -1,4 +1,4 @@
-$basePath: '../../cursors/ink';
+$basePath: '@/theme/cursors/ink';
 
 html[data-cursor-theme="ink"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 9 0, default;

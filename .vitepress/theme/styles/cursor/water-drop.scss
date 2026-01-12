@@ -1,4 +1,4 @@
-$basePath: '../../cursors/waterDrop';
+$basePath: '@/theme/cursors/waterDrop';
 
 html[data-cursor-theme="waterDrop"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 7 1, default;

@@ -1,4 +1,4 @@
-$basePath: '../../cursors/angryBirds';
+$basePath: '@/theme/cursors/angryBirds';
 
 html[data-cursor-theme="angryBirds"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 0 0, default;
