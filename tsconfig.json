@@ -2,22 +2,23 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "strict": true,
+    "sourceMap": false,
     "esModuleInterop": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "types": ["node"],
   },
   "include": [
-    ".vitepress",
+    ".vitepress/**/*",
     ".vitepress/types.d.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "bin",
-    "server",
   ]
 }

@@ -1,4 +1,4 @@
-$basePath: '../../cursors/blackWukong';
+$basePath: '@/theme/cursors/blackWukong';
 
 html[data-cursor-theme="blackWukong"] {
   --pulse-cursor-default: url('#{$basePath}/default.png') 10 8, default;

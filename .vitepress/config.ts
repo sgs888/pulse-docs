@@ -1,13 +1,16 @@
 import { type DefaultTheme, defineConfigWithTheme } from 'vitepress';
 import type { TeekConfig } from 'vitepress-theme-teek';
 import { type PulseTheme, type Md5LoginInfo, PulseLoginType } from './theme/config/pulseConfig';
+import { fileURLToPath, URL } from 'node:url';
 import dotenv from 'dotenv';
 import { teekConfig } from './theme/config/teekConfig';
 import { siteConfig, headerConfig, privateConfig, cursorThemeAppend } from './siteConfig';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 type VpConfig = DefaultTheme.Config;
 
 dotenv.config();
+const buildAnalysis = process.env.BUILD_ANALYSIS === 'true';
 const vitePressOutDir = process.env.VITE_PRESS_OUTPUT_DIR || './.vitepress/dist';
 const serverPort = process.env.EXPRESS_PORT || 3000;
 const vitePressPort = process.env.VITE_PRESS_PORT ? Number(process.env.VITE_PRESS_PORT) : 8000;
@@ -24,7 +27,7 @@ const {
 
 // MD5形式的登录信息，会暴露到客户端
 const md5LoginInfos: Md5LoginInfo[] = [
-  { username: privateUsername, password: privatePassword }
+  { username: privateUsername || '', password: privatePassword || '' }
 ];
 
 const generateSocialLinks = () => {
@@ -121,6 +124,11 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
   },
   vite: {
     publicDir: '../public',
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./', import.meta.url))
+      }
+    },
     server: {
       port: vitePressPort,
       proxy: {
@@ -131,5 +139,13 @@ export default defineConfigWithTheme<VpConfig & TeekConfig & PulseTheme>({
         }
       }
     },
+    plugins: [
+      buildAnalysis && visualizer({
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+        filename: 'stats.html'
+      })
+    ]
   }
 });
